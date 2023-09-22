@@ -3,6 +3,7 @@ import { auth } from '../firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { Link, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import ForgotPassword from './ForgotPassword';
 
 
 
@@ -49,6 +50,10 @@ const Login = () => {
     }
   }
 
+  const handleReset = ()=>{
+    navigate("/forgotpassword");
+  }
+
   return (
     <div>
       <h1>Login Page</h1>
@@ -69,6 +74,7 @@ const Login = () => {
         />
         <button type="submit" className='login-button'>Login</button>
       </form>
+      <p onClick={handleReset}>Forgot Password?</p>
       <p>Need to Signup? <Link to="/signup">Create Account</Link></p>
     </div>
   )

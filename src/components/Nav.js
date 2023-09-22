@@ -5,13 +5,23 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import healthhub from '../assets/Health-Hub-logo.png'
+
 
 
 function NavScrollExample() {
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
       <Container fluid>
-        <Navbar.Brand href="#">Navbar scroll</Navbar.Brand>
+        <Navbar.Brand href="/">
+        <img
+           src={healthhub}  // Replace with the path to your logo image
+            width="35"
+            height="30"
+            className="d-inline-block align-top"
+          />
+          HealthHub
+          </Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
           <Nav
@@ -19,20 +29,20 @@ function NavScrollExample() {
             style={{ maxHeight: '100px' }}
             navbarScroll
           >
-            <Nav.Link href="#action1">Home</Nav.Link>
-            <Nav.Link href="#action2">Link</Nav.Link>
-            <NavDropdown title="Link" id="navbarScrollingDropdown">
-              <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
+            <Nav.Link href="/">Home</Nav.Link>
+            <Nav.Link href="#action2">Explore</Nav.Link>
+            <NavDropdown title="Health-Care" id="navbarScrollingDropdown">
+              <NavDropdown.Item href="#action3">BMI</NavDropdown.Item>
               <NavDropdown.Item href="#action4">
-                Another action
+                Shop
               </NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item href="#action5">
-                Something else here
+              <NavDropdown.Item href="/setting">
+                Setting
               </NavDropdown.Item>
             </NavDropdown>
-            <Nav.Link href="#" disabled>
-              Link
+            <Nav.Link href="#" enable>
+              Contact Us
             </Nav.Link>
           </Nav>
           <Form className="d-flex">

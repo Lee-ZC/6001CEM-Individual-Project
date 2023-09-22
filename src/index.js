@@ -23,6 +23,8 @@ import Protected from './components/Protected';
 import Signup from './pages/SignUp';
 import Login from './pages/Login';
 import Home from './pages/Home';
+import ForgotPassword from './pages/ForgotPassword';
+import Setting from './pages/Setting';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -32,6 +34,8 @@ const router = createBrowserRouter(
       <Route path="/" element={<Protected />} >
         <Route path="/" index element={<Home />} />
       </Route>
+      <Route path="setting" element={<Setting />} />
+      <Route path="forgotpassword" element={<ForgotPassword />} />
     </Route>
   )
 );
