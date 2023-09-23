@@ -29,7 +29,7 @@ export default function FooterWithLogo() {
             <Footer.Link href="#">
               Licensing
             </Footer.Link>
-            <Footer.Link href="#">
+            <Footer.Link href="/contact">
               Contact
             </Footer.Link>
           </Footer.LinkGroup>

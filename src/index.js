@@ -1,14 +1,4 @@
-// import React from 'react';
-// import ReactDOM from 'react-dom/client';
-// import './index.css';
-// import App from './App';
 
-// const root = ReactDOM.createRoot(document.getElementById('root'));
-// root.render(
-//   <React.StrictMode>
-//     <App />
-//   </React.StrictMode>
-// );
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
@@ -25,6 +15,7 @@ import Login from './pages/Login';
 import Home from './pages/Home';
 import ForgotPassword from './pages/ForgotPassword';
 import Setting from './pages/Setting';
+import ErrorPage from './pages/ErrorPage';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -36,6 +27,9 @@ const router = createBrowserRouter(
       </Route>
       <Route path="setting" element={<Setting />} />
       <Route path="forgotpassword" element={<ForgotPassword />} />
+      {/* Catch-all route for 404 errors */}
+      <Route path="*" element={<ErrorPage />} />
+  
     </Route>
   )
 );
