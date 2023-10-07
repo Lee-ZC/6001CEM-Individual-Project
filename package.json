@@ -12,7 +12,9 @@
     "react": "^18.2.0",
     "react-bootstrap": "^2.8.0",
     "react-dom": "^18.2.0",
+    "react-loader-spinner": "^5.4.5",
     "react-router-dom": "^6.16.0",
+    "styled-components": "^6.0.8",
     "sweetalert2": "^11.7.28",
     "web-vitals": "^2.1.4"
   },
