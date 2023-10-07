@@ -3,6 +3,7 @@ import React from "react";
 import { auth } from '../firebase';
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import './css/ForgotPassword.css'; // Import the CSS file
 
 function ForgotPassword() {
   const navigate = useNavigate();
@@ -47,58 +48,25 @@ function ForgotPassword() {
     }
   };
 
+  // Function to handle navigation back to Sign Up
+  const handleBack = () => {
+    navigate("/login");
+  };
+
   return (
-    <div className="App">
-      <h1>Forgot Password</h1>
-      <form onSubmit={(e) => handleSubmit(e)}>
-        <input name="email" /><br/><br/>
-        <button>Reset</button>
-      </form>
+    <div className="forgot-password-container">
+      <div className="forgot-password-app">
+        <h1 className="forgot-password-title">Forgot Password</h1>
+        <form onSubmit={(e) => handleSubmit(e)} className="forgot-password-form">
+          <input name="email" className="forgot-password-input" />
+          <br></br>
+          <button className="forgot-password-button">Reset</button>
+        </form>
+        <br></br>
+        <a className="forgot-password-link" onClick={handleBack}>Back to login</a>
+      </div>
     </div>
   );
 }
 
 export default ForgotPassword;
-
-// import { sendPasswordResetEmail, fetchSignInMethodsForEmail } from "firebase/auth";
-// import React, { useState } from "react";
-// import { auth } from '../firebase';
-// import { useNavigate } from "react-router-dom";
-
-// function ForgotPassword() {
-//   const navigate = useNavigate();
-//   const [emailError, setEmailError] = useState();
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     const emailVal = e.target.email.value;
-
-//     try {
-//       const methods = await fetchSignInMethodsForEmail(auth, emailVal);
-//       if (methods.length === 0) {
-//         setEmailError("Email does not exist.");
-//       } else {
-//         await sendPasswordResetEmail(auth, emailVal);
-//         alert("Check your email for a password reset link.");
-//         navigate("/login");
-//       }
-//     } catch (error) {
-//       console.error("Password reset error:", error);
-//       setEmailError("An error occurred. Please try again later.");
-//     }
-//   };
-
-//   return (
-//     <div className="App">
-//       <h1>Forgot Password</h1>
-//       <form onSubmit={(e) => handleSubmit(e)}>
-//         <input name="email" /><br/><br/>
-//         <button>Reset</button>
-//         {emailError && <p style={{ color: "red" }}>{emailError}</p>}
-//       </form>
-//     </div>
-//   );
-// }
-
-// export default ForgotPassword;
-

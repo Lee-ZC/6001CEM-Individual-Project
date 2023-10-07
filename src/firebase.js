@@ -18,6 +18,8 @@
 // Import Firebase core functions
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore'; // Import Firestore
+
 
 const firebaseConfig = {
     apiKey: "AIzaSyB8YNpQLRsFqFHTfVwJJWS0d0UwdkjLy7I",
@@ -32,5 +34,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 export const auth = getAuth();
+export const firestore = getFirestore(app); // Initialize Firestore
+
 
 export default app;

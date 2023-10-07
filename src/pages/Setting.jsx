@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import Nav from '../components/Nav'; // Import the Nav component
 import Footer from '../components/Footer'; // Import the Footer component
+import GoToTop from '../components/GoToTop'; // Import the Footer component
 
 
 
@@ -50,6 +51,7 @@ const Setting = () => {
   return (
     <div>
         <Nav /> {/* Render the Nav component */}
+        <GoToTop/>
         
 
 
