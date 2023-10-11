@@ -20,7 +20,17 @@ const Login = () => {
       const user = userCredential.user;
       localStorage.setItem('token', user.accessToken);
       localStorage.setItem('user', JSON.stringify(user));
-      navigate("/");
+     
+
+      // Check if the email is "admin@gmail.com" and navigate accordingly
+      if (email === 'admin@gmail.com') {
+        navigate('/admindashboard'); // Navigate to AdminDash.jsx
+      } else {
+        navigate('/');
+      }
+
+
+
       const Toast = Swal.mixin({
         toast: true,
         position: 'top-end',

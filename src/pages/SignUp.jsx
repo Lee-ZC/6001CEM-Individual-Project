@@ -9,6 +9,8 @@ import user_icon from '../assets/person.png';
 import email_icon from '../assets/email.png';
 import password_icon from '../assets/password.png';
 import { ThreeDots } from 'react-loader-spinner'; // Import the ThreeDots loader
+import { doc, setDoc } from 'firebase/firestore'; // Import doc and setDoc
+
 
 const Signup = () => {
   const [email, setEmail] = useState('');
@@ -28,15 +30,15 @@ const Signup = () => {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
-      // Add user details to Firestore
-      const userRef = collection(firestore, 'users');
+      // Add user details to Firestore with UID as the document ID
+      const userRef = doc(firestore, 'users', user.uid); // Specify the document ID as user.uid
       const newUser = {
-        uid: user.uid,
         email: email,
         name: name,
       };
 
-      await addDoc(userRef, newUser);
+      await setDoc(userRef, newUser);
+
 
       // Store user data in localStorage
       localStorage.setItem('token', user.accessToken);
