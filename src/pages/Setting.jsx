@@ -1,44 +1,47 @@
-import { signOut, updateEmail, updatePassword, updateProfile } from 'firebase/auth';
-import React, { useState , useEffect} from 'react';
-import { auth } from '../firebase';
-import { useNavigate } from 'react-router-dom';
-import Swal from 'sweetalert2';
-import Nav from '../components/Nav';
-import Footer from '../components/Footer';
-import GoToTop from '../components/GoToTop';
-import './css/Setting.css'; // Import the CSS file for custom styling
-import { sendEmailVerification } from 'firebase/auth';
-import { firestore } from '../firebase'; // Import the firestore object from your firebase.js file
-
-
-
+import {
+  signOut,
+  updateEmail,
+  updatePassword,
+  updateProfile,
+} from "firebase/auth";
+import React, { useState, useEffect } from "react";
+import { auth } from "../firebase";
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
+import Nav from "../components/Nav";
+import Footer from "../components/Footer";
+import GoToTop from "../components/GoToTop";
+import "./css/Setting.css"; // Import the CSS file for custom styling
+import { sendEmailVerification } from "firebase/auth";
+import { firestore } from "../firebase"; // Import the firestore object from your firebase.js file
 
 const Setting = () => {
-  const user = JSON.parse(localStorage.getItem('user'));
+  const user = JSON.parse(localStorage.getItem("user"));
   const navigate = useNavigate();
 
   // State for form fields
-  const [newName, setNewName] = useState('');
-  const [newEmail, setNewEmail] = useState('');
-  const [newPassword, setNewPassword] = useState('');
+  const [newName, setNewName] = useState("");
+  const [newEmail, setNewEmail] = useState("");
+  const [newPassword, setNewPassword] = useState("");
 
-
-  
   useEffect(() => {
     // Fetch the current user's information from Firestore when the component mounts
     const fetchUserInfo = async () => {
       try {
         const user = auth.currentUser;
         if (user) {
-          console.log('User UID:', user.uid);
+          console.log("User UID:", user.uid);
           // Assuming you have a 'users' collection in Firestore
-          const userDoc = await firestore.collection('users').doc(user.uid).get();
+          const userDoc = await firestore
+            .collection("users")
+            .doc(user.uid)
+            .get();
           if (userDoc.exists) {
             const userData = userDoc.data();
-            console.log('User Data:', userData); // Add this line for debugging
+            console.log("User Data:", userData); // Add this line for debugging
 
             // Set the user's name in the state
-            setNewName(userData.name || ''); // Adjust this according to your database structure
+            setNewName(userData.name || ""); // Adjust this according to your database structure
             setNewEmail(user.email); // Set the user's email in the state
           }
         }
@@ -49,7 +52,7 @@ const Setting = () => {
 
     fetchUserInfo();
   }, []);
-  
+
   const handleUpdate = async (e) => {
     e.preventDefault();
 
@@ -62,9 +65,9 @@ const Setting = () => {
         // Send verification email to the new email address
         await sendEmailVerification(auth.currentUser);
         Swal.fire(
-          'Email Verification',
-          'A verification email has been sent to your new email address. Please verify it to complete the change.',
-          'info'
+          "Email Verification",
+          "A verification email has been sent to your new email address. Please verify it to complete the change.",
+          "info"
         );
       }
       if (newPassword) {
@@ -75,43 +78,43 @@ const Setting = () => {
       // Check if the user has verified their email
       const user = auth.currentUser;
       if (user && user.emailVerified) {
-        Swal.fire('Success!', 'Your information has been updated.', 'success');
+        Swal.fire("Success!", "Your information has been updated.", "success");
       } else {
         Swal.fire(
-          'Success!',
-          'Your information has been updated. Please verify your email to complete the process.',
-          'success'
+          "Success!",
+          "Your information has been updated. Please verify your email to complete the process.",
+          "success"
         );
       }
     } catch (error) {
       console.error(error);
-      const errorMessage = error.message.replace('Firebase: ', '');
-      Swal.fire('Error', errorMessage, 'error');
+      const errorMessage = error.message.replace("Firebase: ", "");
+      Swal.fire("Error", errorMessage, "error");
     }
   };
 
   const handleLogout = async () => {
     try {
       const result = await Swal.fire({
-        title: 'Are you sure?',
-        text: 'You will be logged out!',
-        icon: 'warning',
+        title: "Are you sure?",
+        text: "You will be logged out!",
+        icon: "warning",
         showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, logout',
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, logout",
       });
 
       if (result.isConfirmed) {
         await signOut(auth);
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-        navigate('/login');
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        navigate("/login");
       }
     } catch (error) {
       console.error(error);
-      const errorMessage = error.message.replace('Firebase: ', '');
-      Swal.fire('Error', errorMessage, 'error');
+      const errorMessage = error.message.replace("Firebase: ", "");
+      Swal.fire("Error", errorMessage, "error");
     }
   };
 
