@@ -17,6 +17,7 @@ import Setting from "./pages/Setting";
 import ErrorPage from "./pages/ErrorPage";
 import AdminDash from "./admin/AdminDash";
 import ManageProduct from "./admin/ManageProduct";
+import BMI from "./pages/BMI";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -30,6 +31,7 @@ const router = createBrowserRouter(
       <Route path="forgotpassword" element={<ForgotPassword />} />
       <Route path="admindashboard" element={<AdminDash />} />
       <Route path="manageproduct" element={<ManageProduct />} />
+      <Route path="bmi" element={<BMI />} />
 
       {/* Catch-all route for 404 errors */}
       <Route path="*" element={<ErrorPage />} />
