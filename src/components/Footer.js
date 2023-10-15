@@ -1,13 +1,11 @@
 // FooterWithLogo.js
-import { Footer } from 'flowbite-react';
-import {home} from "../pages/Home"
-import { Link, useNavigate } from 'react-router-dom';
-import healthhub from '../assets/Health-Hub-logo.png'
-
-
+import { Footer } from "flowbite-react";
+import { home } from "../pages/Home";
+import { Link, useNavigate } from "react-router-dom";
+import healthhub from "../assets/Health-Hub-logo.png";
 
 export default function FooterWithLogo() {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
   return (
     <Footer container>
@@ -20,26 +18,14 @@ export default function FooterWithLogo() {
             src="https://flowbite.com/docs/images/logo.svg"
           />
           <Footer.LinkGroup>
-            <Footer.Link href="#">
-              About
-            </Footer.Link>
-            <Footer.Link href="#">
-              Privacy Policy
-            </Footer.Link>
-            <Footer.Link href="#">
-              Licensing
-            </Footer.Link>
-            <Footer.Link href="/contact">
-              Contact
-            </Footer.Link>
+            <Footer.Link href="#">About</Footer.Link>
+            <Footer.Link href="#">Privacy Policy</Footer.Link>
+            <Footer.Link href="#">Licensing</Footer.Link>
+            <Footer.Link href="/contact">Contact</Footer.Link>
           </Footer.LinkGroup>
         </div>
         <Footer.Divider />
-        <Footer.Copyright
-          by="Flowbite™"
-          href="#"
-          year={2022}
-        />
+        <Footer.Copyright by="Flowbite™" href="#" year={2022} />
       </div>
     </Footer>
   );

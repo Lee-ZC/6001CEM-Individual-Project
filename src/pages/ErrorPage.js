@@ -46,15 +46,16 @@ function ErrorPage() {
   return (
     <main style={styles.errorPage}>
       <div style={styles.errorContent}>
-      <h1 >404</h1>
-        <h2 style={styles.errorTitle}>Oops! Something went wrong.</h2>
+        <h1>404</h1>
+        <h2 style={styles.errorTitle}>Page not found</h2>
         <p style={styles.errorMessage}>
-          There's an error on this page. Please try again later or contact the admin for assistance.
+          There's an error on this page. Please try again later or contact the
+          admin for assistance.
         </p>
         <button
           style={styles.contactButton}
-          onMouseEnter={(e) => e.target.style.backgroundColor = "#0056b3"}
-          onMouseLeave={(e) => e.target.style.backgroundColor = "#007bff"}
+          onMouseEnter={(e) => (e.target.style.backgroundColor = "#0056b3")}
+          onMouseLeave={(e) => (e.target.style.backgroundColor = "#007bff")}
           onClick={handleBackToHome} // Call the function to navigate back to home
         >
           Back to Home

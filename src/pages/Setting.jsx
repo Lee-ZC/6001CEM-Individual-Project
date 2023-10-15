@@ -109,6 +109,8 @@ const Setting = () => {
         await signOut(auth);
         localStorage.removeItem("token");
         localStorage.removeItem("user");
+        localStorage.removeItem("bmi");
+
         navigate("/login");
       }
     } catch (error) {
