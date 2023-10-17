@@ -1,68 +1,62 @@
-import React, { useState } from 'react';
-import { auth } from '../firebase';
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { Link, useNavigate } from 'react-router-dom';
-import Swal from 'sweetalert2';
-import email_icon from '../assets/email.png';
-import password_icon from '../assets/password.png';
-import './css/LoginSignup.css'; // Import the CSS file
-
+import React, { useState } from "react";
+import { auth } from "../firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { Link, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
+import email_icon from "../assets/email.png";
+import password_icon from "../assets/password.png";
+import "./css/LoginSignup.css"; // Import the CSS file
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
       const user = userCredential.user;
-      localStorage.setItem('token', user.accessToken);
-      localStorage.setItem('user', JSON.stringify(user));
-     
+      localStorage.setItem("token", user.accessToken);
+      localStorage.setItem("user", JSON.stringify(user));
 
       // Check if the email is "admin@gmail.com" and navigate accordingly
-      if (email === 'admin@gmail.com') {
-        navigate('/admindashboard'); // Navigate to AdminDash.jsx
+      if (email === "admin@gmail.com") {
+        navigate("/addproduct"); // Navigate to AdminDash.jsx
       } else {
-        navigate('/');
+        navigate("/");
       }
-
-
 
       const Toast = Swal.mixin({
         toast: true,
-        position: 'top-end',
+        position: "top-end",
         showConfirmButton: false,
         timer: 3000,
         timerProgressBar: true,
         didOpen: (toast) => {
-          toast.addEventListener('mouseenter', Swal.stopTimer);
-          toast.addEventListener('mouseleave', Swal.resumeTimer);
-        }
+          toast.addEventListener("mouseenter", Swal.stopTimer);
+          toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
       });
 
       Toast.fire({
-        icon: 'success',
-        title: 'Signed in successfully'
+        icon: "success",
+        title: "Signed in successfully",
       });
     } catch (error) {
       console.error(error);
       const errorMessage = error.message.replace("Firebase: ", ""); // Remove "Firebase" keyword
-      Swal.fire(
-        'Error',
-        errorMessage,
-        'error'
-      );
+      Swal.fire("Error", errorMessage, "error");
     }
   };
 
   const handleReset = () => {
     navigate("/forgotpassword");
   };
-
-  
 
   return (
     <div className="container">
@@ -94,13 +88,18 @@ const Login = () => {
           />
         </div>
 
-         {/* Apply the CSS for the "Forgot Password?" text */}
-         <p onClick={handleReset} className='forgotPasswordStyle'>Forgot Password?</p>
-        <button type="submit" className="submit-button">Login</button>
-       
+        {/* Apply the CSS for the "Forgot Password?" text */}
+        <p onClick={handleReset} className="forgotPasswordStyle">
+          Forgot Password?
+        </p>
+        <button type="submit" className="submit-button">
+          Login
+        </button>
       </form>
       <br></br>
-      <p>Need to Signup? <Link to="/signup">Create Account</Link></p>
+      <p>
+        Need to Signup? <Link to="/signup">Create Account</Link>
+      </p>
     </div>
   );
 };

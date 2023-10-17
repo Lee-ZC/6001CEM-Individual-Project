@@ -3,10 +3,10 @@
 /* Styling the entire form container */
 .bmi-container {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
+  min-height: 60vh;
   background-color: #f5f5f5;
 }
 
@@ -19,7 +19,7 @@
   background-color: #fff;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
   text-align: center;
-  margin: auto;
+  margin: 10px; /* Add some margin around the form */
 }
 
 /* Styling form elements (labels, inputs, and buttons) */
@@ -50,4 +50,82 @@
   margin: 20px 0;
   font-size: 24px;
   font-weight: bold;
+}
+
+/* Styling the BMI status container */
+.bmi-status-container {
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-radius: 5px;
+  width: 200px; /* Adjust the width to your liking */
+  background-color: #fff;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  margin: 10px; /* Add some margin around the status container */
+}
+
+/* Styling the BMI status */
+.bmi-status {
+  margin: 20px 0;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* Additional styling for responsiveness */
+@media (max-width: 768px) {
+  .bmi-container {
+    flex-direction: column;
+  }
+}
+
+/* Styling the shopping cart container */
+.shopping-cart-container {
+  text-align: center; /* Center-align the content in the container */
+}
+
+/* Styling the shopping cart */
+.shopping-cart {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 300px;
+  padding: 20px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  margin: 10px; /* Add some margin around the shopping cart */
+  display: inline-block;
+  vertical-align: top;
+}
+
+/* Adjust the width of each shopping cart and add margin */
+.shopping-cart:nth-child(4n + 1) {
+  margin-left: 0;
+}
+
+/* Additional styling for responsiveness */
+@media (max-width: 768px) {
+  .shopping-cart {
+    width: 100%; /* Full width on small screens */
+  }
+}
+
+/* Additional styling for responsiveness */
+@media (max-width: 768px) {
+  .shopping-cart {
+    width: 100%; /* Full width on small screens */
+  }
+}
+
+.shopping-cart h2 {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.shopping-cart ul {
+  list-style: none;
+  padding: 0;
+}
+
+.shopping-cart li {
+  margin: 10px 0;
 }

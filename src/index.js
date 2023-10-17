@@ -15,9 +15,9 @@ import Home from "./pages/Home";
 import ForgotPassword from "./pages/ForgotPassword";
 import Setting from "./pages/Setting";
 import ErrorPage from "./pages/ErrorPage";
-import AdminDash from "./admin/AdminDash";
 import ManageProduct from "./admin/ManageProduct";
 import BMI from "./pages/BMI";
+import AddProduct from "./admin/AddProduct";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -29,7 +29,7 @@ const router = createBrowserRouter(
       </Route>
       <Route path="setting" element={<Setting />} />
       <Route path="forgotpassword" element={<ForgotPassword />} />
-      <Route path="admindashboard" element={<AdminDash />} />
+      <Route path="addproduct" element={<AddProduct />} />
       <Route path="manageproduct" element={<ManageProduct />} />
       <Route path="bmi" element={<BMI />} />
 
