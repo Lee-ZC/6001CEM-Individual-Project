@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { auth, firestore } from "../firebase";
+import { auth, firestore, storage } from "../firebase"; // Make sure to import storage from firebase
 import { useNavigate } from "react-router-dom";
 import { collection, addDoc } from "firebase/firestore";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage"; // Import Firebase Storage functions
 import {
   Alert,
   ToastContainer,
@@ -17,10 +18,20 @@ const AddProduct = () => {
   const navigate = useNavigate();
   const [productName, setProductName] = useState("");
   const [productPrice, setProductPrice] = useState("");
-  const [weightStatus, setWeightStatus] = useState("Underweight"); // Initialize with a default value
+  const [weightStatus, setWeightStatus] = useState("Underweight");
+  const [productDescription, setProductDescription] = useState("");
+  const [productImage, setProductImage] = useState(null); // Added state for product image
+  const [imageURL, setImageURL] = useState(""); // State to store the image URL after upload
   const [validationError, setValidationError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setProductImage(file);
+    }
+  };
 
   useEffect(() => {
     if (validationError) {
@@ -45,46 +56,56 @@ const AddProduct = () => {
   };
 
   const handleAddProduct = async () => {
-    // Validate the form data
-    if (!productName || !productPrice) {
-      setValidationError("Please enter a product name and price.");
+    if (!productName || !productPrice || !productDescription || !productImage) {
+      setValidationError("Please enter product details and upload an image.");
       return;
     }
 
-    // Start loading
     setLoading(true);
 
-    // Add the product data to Firebase Firestore
-    const productData = {
-      name: productName,
-      price: parseFloat(productPrice),
-      weightStatus,
-    };
+    // Create a unique filename for the image
+    const fileName = `${Date.now()}_${productImage.name}`;
+
+    // Create a reference to the storage service, pointing at the image's location
+    const storageRef = ref(storage, fileName);
 
     try {
+      // Upload the image to Firebase Storage and wait for it to complete
+      await uploadBytes(storageRef, productImage);
+
+      // Get the image's download URL after the upload is successful
+      const downloadURL = await getDownloadURL(storageRef);
+
+      // Set the imageURL in the state
+      setImageURL(downloadURL);
+
+      // Add the product data to Firebase Firestore, including the image URL
+      const productData = {
+        name: productName,
+        description: productDescription,
+        price: parseFloat(productPrice),
+        weightStatus,
+        imageUrl: downloadURL, // Use the downloadURL obtained from the Storage
+      };
+
+      // Add the product data to Firestore
       const docRef = await addDoc(
         collection(firestore, "products"),
         productData
       );
-      console.log("Product added with ID: ", docRef.id);
 
-      // Clear the validation error
       setValidationError("");
-
-      // Set the success message
       setSuccessMessage("Product added successfully!");
-
-      // Clear the form
       setProductName("");
       setProductPrice("");
-      setWeightStatus("Underweight"); // Reset weight status to default
-
-      // Stop loading
+      setWeightStatus("Underweight");
+      setProductDescription("");
+      setProductImage(null);
       setLoading(false);
     } catch (error) {
       console.error("Error adding product: ", error);
-      // Stop loading in case of an error
       setLoading(false);
+      setValidationError("Error adding product.");
     }
   };
 
@@ -107,6 +128,16 @@ const AddProduct = () => {
                   <Form.Control.Feedback type="invalid">
                     {validationError}
                   </Form.Control.Feedback>
+                </Form.Group>
+                <Form.Group className="mb-3">
+                  <Form.Label>Product Description</Form.Label>
+                  <Form.Control
+                    as="textarea"
+                    rows={3}
+                    placeholder="Product Description"
+                    value={productDescription}
+                    onChange={(e) => setProductDescription(e.target.value)}
+                  />
                 </Form.Group>
                 <Form.Group className="mb-3">
                   <Form.Label>Product Price</Form.Label>
@@ -134,10 +165,25 @@ const AddProduct = () => {
                     <option value="Obesity">Obesity</option>
                   </Form.Control>
                 </Form.Group>
+                <Form.Group className="mb-3">
+                  <Form.Label>Product Image</Form.Label>
+                  <Form.Control
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                  />
+                </Form.Group>
+                {/* {imageURL && (
+                  <img
+                    src={imageURL}
+                    alt="Product"
+                    style={{ maxWidth: "100%" }}
+                  />
+                )} */}
                 <Button
                   type="button"
                   onClick={handleAddProduct}
-                  disabled={loading} // Disable the button when loading
+                  disabled={loading}
                 >
                   {loading ? "Adding..." : "Add Product"}
                 </Button>

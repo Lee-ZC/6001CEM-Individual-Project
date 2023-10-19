@@ -110,6 +110,8 @@ const Setting = () => {
         localStorage.removeItem("token");
         localStorage.removeItem("user");
         localStorage.removeItem("bmi");
+        localStorage.removeItem("height");
+        localStorage.removeItem("weight");
 
         navigate("/login");
       }
