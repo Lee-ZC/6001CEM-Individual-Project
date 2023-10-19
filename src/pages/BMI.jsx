@@ -13,6 +13,7 @@ import {
   getDocs,
 } from "firebase/firestore";
 import "./css/Bmi.css";
+import { Link } from "react-router-dom";
 
 function BMI() {
   const [weight, setWeight] = useState(0);
@@ -21,19 +22,13 @@ function BMI() {
   const [user, setUser] = useState();
   const [bmiStatus, setBMIStatus] = useState("");
   const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const auth = getAuth();
     onAuthStateChanged(auth, (authUser) => {
       setUser(authUser);
     });
-  }, []);
-
-  useEffect(() => {
-    const storedBMI = localStorage.getItem("bmi");
-    if (storedBMI) {
-      setBMI(parseFloat(storedBMI));
-    }
   }, []);
 
   useEffect(() => {
@@ -48,14 +43,45 @@ function BMI() {
             if (userData.bmi) {
               setBMI(userData.bmi);
             }
+            if (userData.weight) {
+              setWeight(userData.weight);
+            }
+            if (userData.height) {
+              setHeight(userData.height);
+            }
+            if (userData.bmiStatus) {
+              setBMIStatus(userData.bmiStatus);
+            }
           }
         } catch (error) {
-          console.error("Error loading BMI from Firestore:", error);
+          console.error("Error loading data from Firestore:", error);
+        } finally {
+          setLoading(false);
         }
       }
     }
 
     loadBMIFromFirestore();
+
+    const storedBMI = localStorage.getItem("bmi");
+    const storedWeight = localStorage.getItem("weight");
+    const storedHeight = localStorage.getItem("height");
+    const storedBmiStatus = localStorage.getItem("bmiStatus");
+
+    if (storedBMI) {
+      setBMI(parseFloat(storedBMI));
+    }
+    if (storedWeight) {
+      setWeight(parseFloat(storedWeight));
+    }
+    if (storedHeight) {
+      setHeight(parseFloat(storedHeight));
+    }
+    if (storedBmiStatus) {
+      setBMIStatus(storedBmiStatus);
+    }
+
+    setLoading(false);
   }, [user]);
 
   const calculateBMI = () => {
@@ -76,12 +102,17 @@ function BMI() {
     setBMIStatus(status);
 
     localStorage.setItem("bmi", bmiValue);
+    localStorage.setItem("weight", weight);
+    localStorage.setItem("height", height);
 
     if (user) {
       const userDocRef = doc(firestore, "users", user.uid);
 
       updateDoc(userDocRef, {
         bmi: bmiValue,
+        weight: weight,
+        height: height,
+        bmiStatus: status,
       })
         .then(() => {
           console.log("BMI updated in Firestore");
@@ -94,18 +125,23 @@ function BMI() {
     }
   };
 
-  // Query products based on BMI status
   useEffect(() => {
     if (bmiStatus) {
+      setLoading(true); // Set loading to true before querying products
+
       const productsRef = collection(firestore, "products");
       const q = query(productsRef, where("weightStatus", "==", bmiStatus));
-      getDocs(q).then((querySnapshot) => {
-        const productsArray = [];
-        querySnapshot.forEach((doc) => {
-          productsArray.push({ id: doc.id, ...doc.data() });
+      getDocs(q)
+        .then((querySnapshot) => {
+          const productsArray = [];
+          querySnapshot.forEach((doc) => {
+            productsArray.push({ id: doc.id, ...doc.data() });
+          });
+          setProducts(productsArray);
+        })
+        .finally(() => {
+          setLoading(false); // Set loading to false when data is fetched
         });
-        setProducts(productsArray);
-      });
     }
   }, [bmiStatus]);
 
@@ -142,25 +178,37 @@ function BMI() {
 
       <hr />
       <center>
-        {/* <h3>--- Products for {bmiStatus} --- </h3> */}
         <h3>Relevant Product {bmiStatus}</h3>
       </center>
 
       <center>
-        {products.length > 0 && (
+        {loading ? (
+          <div className="loading-indicator">
+            <div className="spinner"></div>
+          </div>
+        ) : (
           <div>
-            {products.map((product) => (
-              <div className="shopping-cart" key={product.id}>
-                <ul>
-                  <li>
-                    <strong>{product.name}</strong> - {product.description}
-                  </li>
-                </ul>
+            {products.length > 0 ? (
+              <div>
+                {products.map((product) => (
+                  <div className="shopping-cart" key={product.id}>
+                    <ul>
+                      <li>
+                        <Link to={`/product/${product.id}`}>
+                          <strong>{product.name}</strong>
+                        </Link>
+                      </li>
+                    </ul>
+                  </div>
+                ))}
               </div>
-            ))}
+            ) : (
+              <p>No products available for the selected BMI status.</p>
+            )}
           </div>
         )}
       </center>
+
       <br />
     </div>
   );
