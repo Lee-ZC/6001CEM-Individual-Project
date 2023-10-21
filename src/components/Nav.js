@@ -63,7 +63,7 @@ function NavScrollExample() {
             <Nav.Link href="#action2">Explore</Nav.Link>
             <NavDropdown title="Health-Care" id="navbarScrollingDropdown">
               <NavDropdown.Item href="/bmi">BMI</NavDropdown.Item>
-              <NavDropdown.Item href="#action4">Shop</NavDropdown.Item>
+              <NavDropdown.Item href="/cart">Cart</NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item href="/setting">Setting</NavDropdown.Item>
             </NavDropdown>

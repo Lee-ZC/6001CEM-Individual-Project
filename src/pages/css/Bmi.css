@@ -95,18 +95,12 @@
   margin: 10px; /* Add some margin around the shopping cart */
   display: inline-block;
   vertical-align: top;
+  position: relative; /* Add relative positioning to the shopping-cart container */
 }
 
 /* Adjust the width of each shopping cart and add margin */
 .shopping-cart:nth-child(4n + 1) {
   margin-left: 0;
-}
-
-/* Additional styling for responsiveness */
-@media (max-width: 768px) {
-  .shopping-cart {
-    width: 100%; /* Full width on small screens */
-  }
 }
 
 /* Additional styling for responsiveness */
@@ -157,4 +151,11 @@
   }
 }
 
-/* Your existing styles can go above or below these loading indicator styles */
+.favorite-icon {
+  font-size: 24px;
+  margin-right: 10px;
+  cursor: pointer;
+  position: absolute; /* Position the favorite-icon absolutely within the shopping-cart container */
+  top: 10px; /* Adjust the top positioning as needed */
+  right: 10px; /* Adjust the right positioning as needed */
+}
