@@ -19,6 +19,7 @@ import ManageProduct from "./admin/ManageProduct";
 import BMI from "./pages/BMI";
 import AddProduct from "./admin/AddProduct";
 import ProductDetail from "./pages/ProductDetail";
+import Cart from "./pages/Cart";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -34,6 +35,7 @@ const router = createBrowserRouter(
       <Route path="manageproduct" element={<ManageProduct />} />
       <Route path="bmi" element={<BMI />} />
       <Route path="/product/:productId" element={<ProductDetail />} />
+      <Route path="cart" element={<Cart />} />
 
       {/* Catch-all route for 404 errors */}
       <Route path="*" element={<ErrorPage />} />

@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import { firestore } from "../firebase";
 import { doc, getDoc } from "firebase/firestore";
 import Nav from "../components/Nav";
+import AddToCartButton from "../components/AddToCartButton"; // Import the new component
+import "./css/ProductDetail.css";
 
 function ProductDetail() {
   const [product, setProduct] = useState(null);
@@ -29,25 +31,39 @@ function ProductDetail() {
   return (
     <div>
       <Nav />
-
-      <h2>Product Detail</h2>
-      {product ? (
-        <div>
-          <h3>{product.name}</h3>
-          {product.imageUrl && ( // Check if imageUrl exists
-            <img
-              src={product.imageUrl}
-              alt="Product"
-              style={{ maxWidth: "25%" }}
-            />
-          )}
-          <p>Description: {product.description}</p>
-          <p>Price: {product.price}</p>
-          <p>Weight Status: {product.weightStatus}</p>
+      <center>
+        <br></br>
+        <div className="product-detail-container">
+          <div className="product-detail">
+            {product ? (
+              <div>
+                <h3 className="product-name">{product.name}</h3>
+                {product.imageUrl && (
+                  <img
+                    src={product.imageUrl}
+                    alt={product.name}
+                    className="product-image"
+                  />
+                )}
+                <p className="product-description">
+                  Description: {product.description}
+                </p>
+                <p className="product-price">Price: ${product.price}</p>
+                <p className="product-weight-status">
+                  Weight Status: {product.weightStatus}
+                </p>
+                <AddToCartButton
+                  productId={productId}
+                  productName={product.name}
+                  price={product.price}
+                />
+              </div>
+            ) : (
+              <p>Loading product details...</p>
+            )}
+          </div>
         </div>
-      ) : (
-        <p>Loading product details...</p>
-      )}
+      </center>
     </div>
   );
 }

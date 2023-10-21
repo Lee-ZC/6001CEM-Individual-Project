@@ -14,6 +14,7 @@ import {
 } from "firebase/firestore";
 import "./css/Bmi.css";
 import { Link } from "react-router-dom";
+import { setDoc } from "firebase/firestore";
 
 function BMI() {
   const [weight, setWeight] = useState(0);
@@ -23,6 +24,7 @@ function BMI() {
   const [bmiStatus, setBMIStatus] = useState("");
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [favorites, setFavorites] = useState([]); // Track user's favorite products
 
   useEffect(() => {
     const auth = getAuth();
@@ -126,6 +128,28 @@ function BMI() {
   };
 
   useEffect(() => {
+    // Fetch user's favorites when the component mounts
+    if (user) {
+      const userId = user.uid;
+      const userDocRef = doc(firestore, "user-favorite", userId);
+
+      getDoc(userDocRef)
+        .then((docSnapshot) => {
+          if (docSnapshot.exists()) {
+            const userData = docSnapshot.data();
+            setFavorites(userData.favorites || []);
+          }
+        })
+        .catch((error) => {
+          console.error(
+            "Error loading user's favorites from Firestore:",
+            error
+          );
+        });
+    }
+  }, [user]);
+
+  useEffect(() => {
     if (bmiStatus) {
       setLoading(true); // Set loading to true before querying products
 
@@ -144,6 +168,42 @@ function BMI() {
         });
     }
   }, [bmiStatus]);
+
+  const toggleFavorite = async (productId) => {
+    if (user) {
+      const userId = user.uid;
+      const userDocRef = doc(firestore, "user-favorite", userId);
+
+      // Check if the document exists
+      const docSnapshot = await getDoc(userDocRef);
+
+      if (docSnapshot.exists()) {
+        // Document exists, update it
+        let updatedFavorites = docSnapshot.data().favorites || []; // Change const to let
+        if (updatedFavorites.includes(productId)) {
+          // Remove the product from favorites
+          updatedFavorites = updatedFavorites.filter((id) => id !== productId);
+        } else {
+          // Add the product to favorites
+          updatedFavorites.push(productId);
+        }
+
+        // Update the document with new favorites
+        await updateDoc(userDocRef, { favorites: updatedFavorites });
+        setFavorites(updatedFavorites);
+      } else {
+        // Document doesn't exist, create it
+        const favorites = [productId];
+        await setDoc(userDocRef, { favorites });
+        setFavorites(favorites);
+      }
+    }
+  };
+
+  // Function to check if a product is in favorites
+  const isProductFavorite = (productId) => {
+    return favorites.includes(productId);
+  };
 
   return (
     <div>
@@ -183,15 +243,35 @@ function BMI() {
 
       <center>
         {loading ? (
+          // Loading indicator
           <div className="loading-indicator">
             <div className="spinner"></div>
           </div>
         ) : (
           <div>
             {products.length > 0 ? (
+              // List of products
               <div>
                 {products.map((product) => (
                   <div className="shopping-cart" key={product.id}>
+                    <span
+                      // Favorite icon
+                      className="favorite-icon"
+                      onClick={() => toggleFavorite(product.id)}
+                      style={{
+                        color: isProductFavorite(product.id) ? "red" : "grey",
+                      }}
+                    >
+                      &#9825;
+                    </span>
+
+                    {product.imageUrl && ( // Check if imageUrl exists
+                      <img
+                        src={product.imageUrl}
+                        alt="Product"
+                        style={{ maxWidth: "25%" }}
+                      />
+                    )}
                     <ul>
                       <li>
                         <Link to={`/product/${product.id}`}>
