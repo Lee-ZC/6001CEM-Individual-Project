@@ -8,11 +8,13 @@ import {
   // Import setDoc function from 'firebase/firestore'
   setDoc,
 } from "firebase/firestore"; // Import Firestore functions
-import { Button, Card, Form } from "react-bootstrap";
+import { Button, Card, Form, Container, Row, Col } from "react-bootstrap";
 import Nav from "../components/Nav";
 import "./css/Cart.css"; // Import your CSS file for this component
+import { useNavigate } from "react-router-dom";
 
 function Cart() {
+  const navigate = useNavigate();
   const [cartItems, setCartItems] = useState([]);
   const [user, setUser] = useState(null);
 
@@ -92,16 +94,29 @@ function Cart() {
     }
   };
 
+  const handleCheckoutClick = () => {
+    // Use the navigate function to go to the checkout page
+    navigate("/checkout");
+  };
+
+  // Calculate the total price of all items in the cart
+  const calculateTotalPrice = () => {
+    return cartItems.reduce(
+      (total, item) => total + item.price * item.quantity,
+      0
+    );
+  };
+
   return (
     <div>
       <Nav />
       <br />
-      <div className="cart-container">
-        <div className="cart-content">
-          <h2>Shopping Cart</h2>
-          {user ? (
-            cartItems.length > 0 ? (
-              cartItems.map((item) => (
+      <Container>
+        <h2>Shopping Cart</h2>
+        {user ? (
+          cartItems.length > 0 ? (
+            <div>
+              {cartItems.map((item) => (
                 <Card key={item.id} className="mb-3">
                   <Card.Body>
                     <Card.Title>{item.productName}</Card.Title>
@@ -126,15 +141,32 @@ function Cart() {
                     </Button>
                   </Card.Body>
                 </Card>
-              ))
-            ) : (
-              <p>Your cart is empty.</p>
-            )
+              ))}
+              <div className="total-section">
+                <Row>
+                  <Col md={8}>
+                    <p>Total Price:</p>
+                  </Col>
+                  <Col md={4}>
+                    <p>${calculateTotalPrice()}</p>
+                  </Col>
+                </Row>
+                <Button
+                  variant="primary"
+                  className="checkout-button"
+                  onClick={handleCheckoutClick}
+                >
+                  Checkout
+                </Button>
+              </div>
+            </div>
           ) : (
-            <p>Please sign in to view your cart.</p>
-          )}
-        </div>
-      </div>
+            <p>Your cart is empty.</p>
+          )
+        ) : (
+          <p>Please sign in to view your cart.</p>
+        )}
+      </Container>
       <br />
     </div>
   );
