@@ -45,3 +45,31 @@
   text-align: center;
   margin: 20px 0;
 }
+
+/* Style for the section displaying total price */
+.total-section {
+  background-color: #f5f5f5;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Style for the "Checkout" button */
+.checkout-button {
+  background-color: #007bff; /* Use your preferred button color */
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/* Hover effect for the "Checkout" button */
+.checkout-button:hover {
+  background-color: #0056b3; /* Darker color when hovered */
+}
