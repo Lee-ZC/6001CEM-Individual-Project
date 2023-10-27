@@ -21,6 +21,10 @@ import AddProduct from "./admin/AddProduct";
 import ProductDetail from "./pages/ProductDetail";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
+import Favorites from "./pages/Favorites";
+import OrderHistory from "./pages/OrderHistory";
+import FitnessLocationsNearby from "./pages/FitnessLocationsNearby";
+import AddFitnessLocation from "./admin/AddFitnessLocation";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -38,6 +42,10 @@ const router = createBrowserRouter(
       <Route path="/product/:productId" element={<ProductDetail />} />
       <Route path="cart" element={<Cart />} />
       <Route path="checkout" element={<Checkout />} />
+      <Route path="favorites" element={<Favorites />} />
+      <Route path="orderhistory" element={<OrderHistory />} />
+      <Route path="fitness" element={<FitnessLocationsNearby />} />
+      <Route path="addfitness" element={<AddFitnessLocation />} />
 
       {/* Catch-all route for 404 errors */}
       <Route path="*" element={<ErrorPage />} />

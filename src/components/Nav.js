@@ -60,10 +60,14 @@ function NavScrollExample() {
             navbarScroll
           >
             <Nav.Link href="/">Home</Nav.Link>
-            <Nav.Link href="#action2">Explore</Nav.Link>
+            <Nav.Link href="/fitness">Explore</Nav.Link>
             <NavDropdown title="Health-Care" id="navbarScrollingDropdown">
               <NavDropdown.Item href="/bmi">BMI</NavDropdown.Item>
+              <NavDropdown.Item href="/favorites">Favorites</NavDropdown.Item>
               <NavDropdown.Item href="/cart">Cart</NavDropdown.Item>
+              <NavDropdown.Item href="/orderhistory">
+                Order history
+              </NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item href="/setting">Setting</NavDropdown.Item>
             </NavDropdown>

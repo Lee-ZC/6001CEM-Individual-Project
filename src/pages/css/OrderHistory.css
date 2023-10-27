@@ -1,0 +1,55 @@
+/* OrderHistory.css */
+
+/* Style for the overall container */
+.order-history-container {
+  margin-top: 10px;
+}
+
+/* Style for the order history cards */
+.card {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+/* Style for the order ID header */
+.card-header {
+  font-weight: bold;
+  background-color: #007bff;
+  color: #fff;
+}
+
+/* Style for the cart item container */
+.cart-item-container {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+/* Style for the cart item text (smaller font size) */
+.cart-item-container .card-text {
+  font-size: 14px;
+}
+
+/* Style for the total price text (smaller font size) */
+.cart-item-container .card-text:last-child {
+  font-size: 16px;
+}
+
+.card-text {
+  font-size: 14px;
+}
+
+/* Style for the loading text */
+.loading-text {
+  text-align: center;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+/* Style for the "No order history" text */
+.no-history-text {
+  text-align: center;
+  font-weight: bold;
+  font-size: 10px;
+}
