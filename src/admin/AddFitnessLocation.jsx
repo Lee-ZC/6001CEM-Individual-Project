@@ -8,6 +8,8 @@ function AddFitnessLocation() {
   const [address, setAddress] = useState("");
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
+  const [category, setCategory] = useState("Outdoor Activities"); // Default to "Outdoor Activities"
+  const [cost, setCost] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -16,6 +18,8 @@ function AddFitnessLocation() {
     const fitnessLocation = {
       name,
       address,
+      category, // Add the selected category to the document
+      cost, // Add the cost to the document
       latitude: parseFloat(latitude),
       longitude: parseFloat(longitude),
     };
@@ -26,6 +30,8 @@ function AddFitnessLocation() {
       // Clear the form fields after successfully adding the location
       setName("");
       setAddress("");
+      setCategory("Outdoor Activities"); // Reset to the default category
+      setCost("");
       setLatitude("");
       setLongitude("");
 
@@ -55,6 +61,28 @@ function AddFitnessLocation() {
               type="text"
               value={address}
               onChange={(e) => setAddress(e.target.value)}
+              required
+            />
+          </div>
+          <div>
+            <label>Category:</label>
+            <select
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              required
+            >
+              <option value="Outdoor Activities">Outdoor Activities</option>
+              <option value="Group Fitness Classes">
+                Group Fitness Classes
+              </option>
+            </select>
+          </div>
+          <div>
+            <label>Cost:</label>
+            <input
+              type="text"
+              value={cost}
+              onChange={(e) => setCost(e.target.value)}
               required
             />
           </div>
