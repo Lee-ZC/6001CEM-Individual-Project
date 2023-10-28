@@ -1,41 +1,107 @@
-/* Style for the loading indicator */
-.loading-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+/* Styles for the fitness locations container */
+.fitness-locations-container {
+  padding: 20px;
+  background-color: #f0f0f0;
 }
 
-.loading-spinner {
-  border: 4px solid rgba(0, 0, 0, 0.3);
-  border-top: 4px solid #3498db;
+/* Styles for the filter container */
+.filter-container {
+  margin-bottom: 20px;
+}
+
+/* Styles for the filter select element */
+.filter-container select {
+  padding: 5px;
+  font-size: 16px;
+}
+
+/* Styles for the loading indicator */
+.loading-indicator {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.loading-indicator .spinner {
+  border: 6px solid rgba(0, 0, 0, 0.3);
+  border-top: 6px solid #007bff; /* Blue color for the spinner */
   border-radius: 50%;
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   animation: spin 2s linear infinite;
 }
 
-/* Style for the list of nearby locations */
-.locations-list {
+/* Keyframes for the loading spinner animation */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Styles for the fitness locations list */
+.fitness-locations-list {
   list-style: none;
   padding: 0;
 }
 
-.location-item {
+/* Styles for each fitness location list item */
+.fitness-locations-list li {
   margin: 10px 0;
-  border: 1px solid #ccc;
-  padding: 10px;
-  border-radius: 5px;
-  background-color: #f9f9f9;
 }
 
-.location-link {
+/* Styles for links within the list */
+.fitness-locations-list a {
   text-decoration: none;
-  color: #3498db;
+  color: #007bff; /* Blue color for links */
 }
 
-.location-link:hover {
+/* Hover effect for links */
+.fitness-locations-list a:hover {
   text-decoration: underline;
 }
 
-/* Add any additional styling you need to improve the user interface. */
+/* Add this CSS to your FitnessLocationsNearby.css file or create a new CSS file for the enrollment form */
+
+/* Styles for the enrollment form container */
+.enrollment-form-container {
+  background-color: #fff;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+/* Styles for form inputs */
+.enrollment-form-container input {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Styles for the submit button */
+.enrollment-form-container button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
+  margin: 10px 0;
+  transition: background-color 0.3s;
+}
+
+/* Hover effect for the submit button */
+.enrollment-form-container button:hover {
+  background-color: #0056b3;
+}
+
+/* Add any additional styling as needed */
