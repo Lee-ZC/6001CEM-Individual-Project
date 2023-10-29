@@ -1,107 +1,106 @@
-/* Styles for the fitness locations container */
-.fitness-locations-container {
-  padding: 20px;
-  background-color: #f0f0f0;
+/* Enroll Page Container */
+.enroll-page-container {
+  margin: 2rem;
+  padding: 1rem;
+  border: 1px solid #ddd;
+  background-color: #f7f7f7;
 }
 
-/* Styles for the filter container */
+/* Enroll Page Title */
+.enroll-page-title {
+  font-size: 24px;
+  margin-bottom: 1rem;
+}
+
+/* Filter Container */
 .filter-container {
-  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
 }
 
-/* Styles for the filter select element */
-.filter-container select {
-  padding: 5px;
-  font-size: 16px;
+/* Filter Label */
+.enroll-page-label {
+  font-weight: bold;
+  margin-right: 1rem;
 }
 
-/* Styles for the loading indicator */
+/* Filter Select */
+.enroll-page-select {
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+/* Loading Indicator */
 .loading-indicator {
-  text-align: center;
-  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
 }
 
-.loading-indicator .spinner {
-  border: 6px solid rgba(0, 0, 0, 0.3);
-  border-top: 6px solid #007bff; /* Blue color for the spinner */
+/* Spinner Animation */
+.spinner {
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-left: 4px solid #3498db;
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   animation: spin 2s linear infinite;
 }
 
-/* Keyframes for the loading spinner animation */
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-/* Styles for the fitness locations list */
+/* Fitness Locations List */
 .fitness-locations-list {
   list-style: none;
   padding: 0;
 }
 
-/* Styles for each fitness location list item */
-.fitness-locations-list li {
-  margin: 10px 0;
-}
-
-/* Styles for links within the list */
-.fitness-locations-list a {
-  text-decoration: none;
-  color: #007bff; /* Blue color for links */
-}
-
-/* Hover effect for links */
-.fitness-locations-list a:hover {
-  text-decoration: underline;
-}
-
-/* Add this CSS to your FitnessLocationsNearby.css file or create a new CSS file for the enrollment form */
-
-/* Styles for the enrollment form container */
-.enrollment-form-container {
+/* Fitness Location Item */
+.fitness-location-item {
+  margin: 1rem 0;
+  padding: 1rem;
+  border: 1px solid #ddd;
   background-color: #fff;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-  max-width: 400px;
-  margin: 0 auto;
-  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Styles for form inputs */
-.enrollment-form-container input {
-  display: block;
-  width: 100%;
-  padding: 10px;
-  margin: 10px 0;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-/* Styles for the submit button */
-.enrollment-form-container button {
-  background-color: #007bff;
+/* Enroll Button */
+.enroll-button {
+  background-color: #3498db;
   color: #fff;
   border: none;
-  border-radius: 5px;
-  padding: 10px 20px;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
   cursor: pointer;
-  font-size: 16px;
-  margin: 10px 0;
   transition: background-color 0.3s;
 }
 
-/* Hover effect for the submit button */
-.enrollment-form-container button:hover {
-  background-color: #0056b3;
+.enroll-button:hover {
+  background-color: #1e6da6;
 }
 
-/* Add any additional styling as needed */
+/* Fitness Location Link */
+.fitness-location-link {
+  font-size: 18px;
+  text-decoration: none;
+  color: #333;
+}
+
+/* Additional Styles for Enrollment Form Inputs */
+.enrollment-input {
+  margin: 0.5rem 0;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+/* CSS for Google Maps Link */
+.fitness-location-link {
+  text-decoration: none;
+  color: #3498db;
+}
+
+.fitness-location-link:hover {
+  text-decoration: underline;
+}
