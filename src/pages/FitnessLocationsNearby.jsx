@@ -1,26 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { collection, getDocs, query, where, addDoc } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  query,
+  where,
+  addDoc,
+  doc,
+  getDoc,
+} from "firebase/firestore";
 import Nav from "../components/Nav";
 import { firestore } from "../firebase";
 import Swal from "sweetalert2"; // Import SweetAlert
 import "./css/FitnessLocationsNearby.css";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase"; // Import your Firebase configuration
-
-function calculateDistance(lat1, lon1, lat2, lon2) {
-  const radlat1 = (Math.PI * lat1) / 180;
-  const radlat2 = (Math.PI * lat2) / 180;
-  const theta = lon1 - lon2;
-  const radtheta = (Math.PI * theta) / 180;
-  let dist =
-    Math.sin(radlat1) * Math.sin(radlat2) +
-    Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
-  dist = Math.acos(dist);
-  dist = (dist * 180) / Math.PI;
-  dist = dist * 60 * 1.1515; // Distance in miles
-  dist = dist * 1.609344; // Distance in kilometers
-  return dist * 1000; // Distance in meters
-}
+import "./css/FitnessLocationsNearby.css"; // Import your custom CSS
 
 function FitnessLocationsNearby() {
   const [userLocation, setUserLocation] = useState(null);
@@ -55,6 +49,7 @@ function FitnessLocationsNearby() {
 
     return () => {
       setIsMounted(false);
+      unsubscribe();
     };
   }, []);
 
@@ -110,36 +105,89 @@ function FitnessLocationsNearby() {
     }
   };
 
+  function calculateDistance(lat1, lon1, lat2, lon2) {
+    const radlat1 = (Math.PI * lat1) / 180;
+    const radlat2 = (Math.PI * lat2) / 180;
+    const theta = lon1 - lon2;
+    const radtheta = (Math.PI * theta) / 180;
+    let dist =
+      Math.sin(radlat1) * Math.sin(radlat2) +
+      Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+    dist = Math.acos(dist);
+    dist = (dist * 180) / Math.PI;
+    dist = dist * 60 * 1.1515; // Distance in miles
+    dist = dist * 1.609344; // Distance in kilometers
+    return dist * 1000; // Distance in meters
+  }
+
   const openEnrollmentForm = async (fitnessLocation) => {
     // Use SweetAlert to show the form
     const { value: formValues } = await Swal.fire({
       title: `Enroll for ${fitnessLocation.name}`,
       html:
-        '<input id="swal-date" class="swal2-input" placeholder="Date">' +
-        '<input id="swal-time" class="swal2-input" placeholder="Time">' +
-        '<input id="swal-name" class="swal2-input" placeholder="Your Name">' +
-        '<input id="swal-contact" class="swal2-input" placeholder="Contact Number">',
+        '<input id="swal-date" class="swal2-input enrollment-input" type="date" placeholder="Date (YYYY-MM-DD)">' +
+        "<br>" +
+        '<input id="swal-start-time" class="swal2-input enrollment-input" type="time" placeholder="Start Time (HH:MM AM/PM)">' +
+        "<br>" +
+        '<input id="swal-end-time" class="swal2-input enrollment-input" type="time" placeholder="End Time (HH:MM AM/PM)">' +
+        "<br>" +
+        '<input id="swal-name" class="swal2-input enrollment-input" placeholder="Your Name">' +
+        "<br>" +
+        '<input id="swal-contact" class="swal2-input enrollment-input" placeholder="Contact Number">',
       focusConfirm: false,
       preConfirm: () => {
-        return [
-          document.getElementById("swal-date").value,
-          document.getElementById("swal-time").value,
-          document.getElementById("swal-name").value,
-          document.getElementById("swal-contact").value,
-        ];
+        const dateInput = document.getElementById("swal-date").value;
+        const startTimeInput = document.getElementById("swal-start-time").value;
+        const endTimeInput = document.getElementById("swal-end-time").value;
+
+        console.log("Date Input:", dateInput);
+        console.log("Start Time Input:", startTimeInput);
+        console.log("End Time Input:", endTimeInput);
+
+        // Date format validation (YYYY-MM-DD)
+        const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+        const isDateValid = dateRegex.test(dateInput);
+
+        // Time format validation (HH:MM AM/PM)
+        const timeRegex = /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
+        const isStartTimeValid = timeRegex.test(startTimeInput);
+        const isEndTimeValid = timeRegex.test(endTimeInput);
+
+        if (!isDateValid) {
+          Swal.showValidationMessage("Invalid date format (YYYY-MM-DD)");
+        } else if (!isStartTimeValid || !isEndTimeValid) {
+          Swal.showValidationMessage("Invalid time format (HH:MM AM/PM)");
+        } else {
+          return [
+            dateInput,
+            startTimeInput,
+            endTimeInput,
+            document.getElementById("swal-name").value,
+            document.getElementById("swal-contact").value,
+          ];
+        }
       },
     });
 
     if (formValues) {
+      const [date, startTime, endTime, name, contact] = formValues;
+
+      // Calculate the total time duration in hours
+      const start = new Date(`${date} ${startTime}`);
+      const end = new Date(`${date} ${endTime}`);
+      const totalTimeHours = ((end - start) / 3600000).toFixed(2); // 3600000 milliseconds in an hour
+
       // Save the enrollment information to Firestore
-      const [date, time, name, contact] = formValues;
       const enrollmentData = {
         date,
-        time,
+        startTime,
+        endTime,
+        totalTime: totalTimeHours,
         name,
         contact,
         fitnessLocation: fitnessLocation.name,
-        userId: currentUser, // Save the current user's ID
+        status: "pending",
+        userId: currentUser,
       };
 
       try {
@@ -157,14 +205,15 @@ function FitnessLocationsNearby() {
   return (
     <div>
       <Nav />
-      <div className="fitness-locations-container">
-        <h2>Fitness Locations Nearby</h2>
+      <div className="enroll-page-container">
+        <h2 className="enroll-page-title">Fitness Locations Nearby</h2>
 
         <div className="filter-container">
-          <label>Filter by Category:</label>
+          <label className="enroll-page-label">Filter by Category:</label>
           <select
             value={filterCategory}
             onChange={(e) => setFilterCategory(e.target.value)}
+            className="enroll-page-select"
           >
             <option value="All">All</option>
             <option value="Outdoor Activities">Outdoor Activities</option>
@@ -178,21 +227,33 @@ function FitnessLocationsNearby() {
           </div>
         ) : (
           <ul className="fitness-locations-list">
-            {nearbyLocations.map(({ fitnessLocation, distance }, index) => (
-              <li key={index}>
-                <button onClick={() => openEnrollmentForm(fitnessLocation)}>
-                  Enroll
-                </button>
-                <a
-                  href={`https://www.google.com/maps/search/?api=1&query=${fitnessLocation.latitude},${fitnessLocation.longitude}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {fitnessLocation.name}
-                </a>{" "}
-                - {fitnessLocation.address} (Distance: {distance} meters)
-              </li>
-            ))}
+            {nearbyLocations.map(({ fitnessLocation, distance }, index) => {
+              const distanceDisplay =
+                distance < 1000
+                  ? `${distance.toFixed(2)} meters`
+                  : `${(distance / 1000).toFixed(2)} km`;
+
+              return (
+                <li key={index} className="fitness-location-item">
+                  <button
+                    onClick={() => openEnrollmentForm(fitnessLocation)}
+                    className="enroll-button"
+                  >
+                    Enroll
+                  </button>
+                  {"   "}
+                  <a
+                    href={`https://www.google.com/maps/search/?api=1&query=${fitnessLocation.latitude},${fitnessLocation.longitude}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="fitness-location-link"
+                  >
+                    {fitnessLocation.name}
+                  </a>{" "}
+                  - {fitnessLocation.address} (Distance: {distanceDisplay})
+                </li>
+              );
+            })}
           </ul>
         )}
       </div>

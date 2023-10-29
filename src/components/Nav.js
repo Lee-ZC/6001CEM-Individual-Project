@@ -60,7 +60,16 @@ function NavScrollExample() {
             navbarScroll
           >
             <Nav.Link href="/">Home</Nav.Link>
-            <Nav.Link href="/fitness">Explore</Nav.Link>
+
+            <NavDropdown title="Explore" id="navbarScrollingDropdown">
+              <NavDropdown.Item href="/fitness">
+                Fitness Activities Nearby
+              </NavDropdown.Item>
+              <NavDropdown.Item href="/enrollments">
+                Enrollments
+              </NavDropdown.Item>
+            </NavDropdown>
+
             <NavDropdown title="Health-Care" id="navbarScrollingDropdown">
               <NavDropdown.Item href="/bmi">BMI</NavDropdown.Item>
               <NavDropdown.Item href="/favorites">Favorites</NavDropdown.Item>
@@ -71,6 +80,7 @@ function NavScrollExample() {
               <NavDropdown.Divider />
               <NavDropdown.Item href="/setting">Setting</NavDropdown.Item>
             </NavDropdown>
+
             <Nav.Link href="#" enable>
               Contact Us
             </Nav.Link>

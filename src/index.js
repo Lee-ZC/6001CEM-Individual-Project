@@ -25,6 +25,7 @@ import Favorites from "./pages/Favorites";
 import OrderHistory from "./pages/OrderHistory";
 import FitnessLocationsNearby from "./pages/FitnessLocationsNearby";
 import AddFitnessLocation from "./admin/AddFitnessLocation";
+import EnrollmentsHistory from "./pages/EnrollmentsHistory";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -46,6 +47,7 @@ const router = createBrowserRouter(
       <Route path="orderhistory" element={<OrderHistory />} />
       <Route path="fitness" element={<FitnessLocationsNearby />} />
       <Route path="addfitness" element={<AddFitnessLocation />} />
+      <Route path="enrollments" element={<EnrollmentsHistory />} />
 
       {/* Catch-all route for 404 errors */}
       <Route path="*" element={<ErrorPage />} />
