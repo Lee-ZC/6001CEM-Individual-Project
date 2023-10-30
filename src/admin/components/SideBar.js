@@ -4,8 +4,12 @@ import "../css/SideBar.css"; // Import your custom CSS (assuming you have a CSS 
 import $ from "jquery"; // Import jQuery
 import "bootstrap/dist/js/bootstrap.bundle.min.js"; // Import Bootstrap JavaScript
 import healthhub from "../../assets/Health-Hub-logo.png";
+import { auth } from "../../firebase";
+import { useNavigate } from "react-router-dom";
 
 function SideBar(props) {
+  const navigate = useNavigate();
+
   const [isExpanded, setIsExpanded] = useState(false);
 
   const handleToggleSidebar = () => {
@@ -26,6 +30,14 @@ function SideBar(props) {
       $(".sidebar").removeClass("active");
     });
   }, []);
+
+  const handleSignOut = () => {
+    auth.signOut().then(() => {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      navigate("/login");
+    });
+  };
 
   return (
     <div className={`main-container d-flex ${isExpanded ? "expanded" : ""}`}>
@@ -83,13 +95,16 @@ function SideBar(props) {
         <hr className="h-color mx-2" />
         <ul className="list-unstyled px-2">
           <li className="">
-            <a href="#" className="text-decoration-none px-3 py-2 d-block">
-              <i className="fal fa-bars"></i> Settings
+            <a
+              href="/fitnessStatus"
+              className="text-decoration-none px-3 py-2 d-block"
+            >
+              <i className="fal fa-bell"></i> Fitness Status Update
             </a>
           </li>
           <li className="">
             <a href="#" className="text-decoration-none px-3 py-2 d-block">
-              <i className="fal fa-bell"></i> Notifications
+              <i className="fal fa-bars"></i> Settings
             </a>
           </li>
         </ul>
@@ -127,8 +142,13 @@ function SideBar(props) {
             >
               <ul className="navbar-nav mb-2 mb-lg-0">
                 <li className="nav-item">
-                  <a className="nav-link active" aria-current="page" href="#">
-                    Profile
+                  <a
+                    className="nav-link active"
+                    aria-current="page"
+                    href="/login"
+                    onClick={handleSignOut}
+                  >
+                    Logout
                   </a>
                 </li>
               </ul>

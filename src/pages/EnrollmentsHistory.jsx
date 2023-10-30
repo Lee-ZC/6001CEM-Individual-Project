@@ -105,6 +105,7 @@ function EnrollmentsHistory() {
           </ul>
         )}
       </div>
+      <br /> <br />
     </div>
   );
 }
