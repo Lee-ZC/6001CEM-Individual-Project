@@ -1,0 +1,93 @@
+/* Style the entire page */
+.add-product-page {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Style the page title */
+.page-title {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Style form groups */
+.form-group {
+  margin-bottom: 20px;
+}
+
+/* Style form labels */
+.form-label {
+  display: block;
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 5px;
+}
+
+/* Style form inputs */
+.form-input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  color: #333;
+}
+
+/* Style the product image input */
+.product-image-input {
+  border: 1px solid;
+}
+
+/* Style the submit button */
+.submit-button {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.submit-button:hover {
+  background-color: #0056b3;
+}
+
+/* Style success message */
+.success-message {
+  font-size: 16px;
+  color: #4caf50;
+  margin-top: 20px;
+}
+
+/* Style error message */
+.error-message {
+  font-size: 16px;
+  color: #ff0000;
+  margin-top: 20px;
+}
+
+/* Add any additional styles as needed */
+/* CSS for the modified file input */
+.input-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.input-group-text {
+  background-color: #007bff;
+  color: #fff;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+/* Style the selected image name */
+.selected-image-name {
+  font-size: 14px;
+  margin-top: 5px;
+  color: #555;
+}

@@ -1,0 +1,102 @@
+/* EnrollmentsHistory.css */
+
+/* Container for the entire page */
+.enrollments-history-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Page title */
+.history-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+/* Loading indicator styles */
+.loading-indicator {
+  text-align: center;
+  margin: 20px;
+}
+
+.spinner {
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 2s linear infinite;
+  margin: 0 auto;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* List of enrollments */
+.enrollments-list {
+  list-style: none;
+  padding: 0;
+}
+
+/* Individual enrollment item */
+.enrollment-item {
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+/* Styles for labels and data within each enrollment item */
+.enrollment-label {
+  font-weight: bold;
+  margin-right: 5px;
+}
+
+/* Enrollment status styles (approved, rejected, pending) */
+.enrollment-status {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 5px;
+  color: #fff;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.approved {
+  background-color: #2ecc71; /* Green for approved */
+}
+
+.rejected {
+  background-color: #e74c3c; /* Red for rejected */
+}
+
+.pending {
+  background-color: #f1c40f; /* Yellow for pending */
+}
+
+/* Buttons for updating enrollment status */
+button {
+  background-color: #3498db;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+button:hover {
+  background-color: #2980b9;
+}

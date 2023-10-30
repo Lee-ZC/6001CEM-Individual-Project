@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import SideBar from "./components/SideBar";
 import { firestore } from "../firebase";
 import { collection, addDoc } from "firebase/firestore";
+import "./css/AddFitnessLocation.css"; // Import your custom CSS
 
 function AddFitnessLocation() {
   const [name, setName] = useState("");
@@ -44,70 +45,98 @@ function AddFitnessLocation() {
   return (
     <div>
       <SideBar>
-        <h2>Add Fitness Location</h2>
-        <form onSubmit={handleSubmit}>
-          <div>
-            <label>Name:</label>
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-            />
-          </div>
-          <div>
-            <label>Address:</label>
-            <input
-              type="text"
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
-              required
-            />
-          </div>
-          <div>
-            <label>Category:</label>
-            <select
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              required
-            >
-              <option value="Outdoor Activities">Outdoor Activities</option>
-              <option value="Group Fitness Classes">
-                Group Fitness Classes
-              </option>
-            </select>
-          </div>
-          <div>
-            <label>Cost:</label>
-            <input
-              type="text"
-              value={cost}
-              onChange={(e) => setCost(e.target.value)}
-              required
-            />
-          </div>
-          <div>
-            <label>Latitude:</label>
-            <input
-              type="number"
-              value={latitude}
-              onChange={(e) => setLatitude(e.target.value)}
-              required
-            />
-          </div>
-          <div>
-            <label>Longitude:</label>
-            <input
-              type="number"
-              value={longitude}
-              onChange={(e) => setLongitude(e.target.value)}
-              required
-            />
-          </div>
-          <div>
-            <button type="submit">Add Location</button>
-          </div>
-        </form>
+        <div className="fitness-location-form">
+          <h2 className="page-title">Add Fitness Location</h2>
+          <form className="add-location-form" onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label htmlFor="name" className="form-label">
+                Name:
+              </label>
+              <input
+                type="text"
+                id="name"
+                className="form-input"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="address" className="form-label">
+                Address:
+              </label>
+              <input
+                type="text"
+                id="address"
+                className="form-input"
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="category" className="form-label">
+                Category:
+              </label>
+              <select
+                id="category"
+                className="form-input"
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+                required
+              >
+                <option value="Outdoor Activities">Outdoor Activities</option>
+                <option value="Group Fitness Classes">
+                  Group Fitness Classes
+                </option>
+              </select>
+            </div>
+            <div className="form-group">
+              <label htmlFor="cost" className="form-label">
+                Cost:
+              </label>
+              <input
+                type="text"
+                id="cost"
+                className="form-input"
+                value={cost}
+                onChange={(e) => setCost(e.target.value)}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="latitude" className="form-label">
+                Latitude:
+              </label>
+              <input
+                type="number"
+                id="latitude"
+                className="form-input"
+                value={latitude}
+                onChange={(e) => setLatitude(e.target.value)}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="longitude" className="form-label">
+                Longitude:
+              </label>
+              <input
+                type="number"
+                id="longitude"
+                className="form-input"
+                value={longitude}
+                onChange={(e) => setLongitude(e.target.value)}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <button type="submit" className="submit-button">
+                Add Location
+              </button>
+            </div>
+          </form>
+        </div>
       </SideBar>
     </div>
   );
