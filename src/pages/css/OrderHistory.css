@@ -53,3 +53,13 @@
   font-weight: bold;
   font-size: 10px;
 }
+/* OrderHistory.css */
+
+.e-invoice-button {
+  float: right; /* Move the button to the right */
+  background-color: green; /* Green background color */
+  color: white; /* White text color */
+  border: none; /* Remove the button border */
+  padding: 8px 16px; /* Adjust padding as needed */
+  cursor: pointer;
+}

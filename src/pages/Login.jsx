@@ -26,7 +26,7 @@ const Login = () => {
 
       // Check if the email is "admin@gmail.com" and navigate accordingly
       if (email === "admin@gmail.com") {
-        navigate("/addproduct"); // Navigate to AdminDash.jsx
+        navigate("/dashboard"); // Navigate to AdminDash.jsx
       } else {
         navigate("/");
       }

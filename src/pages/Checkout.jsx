@@ -93,6 +93,8 @@ function Checkout() {
       shippingInfo: shippingInfo,
       cartItems: cartItems,
       totalPrice: total,
+      orderDate: new Date(), // Add the current date and time
+
       // Add other order-related data (e.g., order date, status, payment info) as needed.
     };
 

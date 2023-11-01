@@ -63,7 +63,10 @@ function SideBar(props) {
         </div>
         <ul className="list-unstyled px-2">
           <li className="active">
-            <a href="#" className="text-decoration-none px-3 py-2 d-block">
+            <a
+              href="/dashboard"
+              className="text-decoration-none px-3 py-2 d-block"
+            >
               <i className="fal fa-home"></i> Dashboard
             </a>
           </li>

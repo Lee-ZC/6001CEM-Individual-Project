@@ -27,6 +27,8 @@ import FitnessLocationsNearby from "./pages/FitnessLocationsNearby";
 import AddFitnessLocation from "./admin/AddFitnessLocation";
 import EnrollmentsHistory from "./pages/EnrollmentsHistory";
 import UpdateEnrollments from "./admin/UpdateEnrollments";
+import Dashboard from "./admin/Dashboard";
+import ContactUs from "./pages/ContactUs";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -50,6 +52,8 @@ const router = createBrowserRouter(
       <Route path="addfitness" element={<AddFitnessLocation />} />
       <Route path="enrollments" element={<EnrollmentsHistory />} />
       <Route path="fitnessStatus" element={<UpdateEnrollments />} />
+      <Route path="dashboard" element={<Dashboard />} />
+      <Route path="contact" element={<ContactUs />} />
 
       {/* Catch-all route for 404 errors */}
       <Route path="*" element={<ErrorPage />} />
