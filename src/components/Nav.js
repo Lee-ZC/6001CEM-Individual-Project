@@ -81,7 +81,7 @@ function NavScrollExample() {
               <NavDropdown.Item href="/setting">Setting</NavDropdown.Item>
             </NavDropdown>
 
-            <Nav.Link href="#" enable>
+            <Nav.Link href="/contact" enable>
               Contact Us
             </Nav.Link>
           </Nav>

@@ -1,0 +1,76 @@
+/* Dashboard container styles */
+.dashboard-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: #f5f5f5;
+  padding: 20px;
+}
+
+/* Dashboard item styles */
+.dashboard-item {
+  text-align: center;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin: 10px;
+}
+
+/* Dashboard item title styles */
+.dashboard-item h2 {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+/* Dashboard item data styles */
+.dashboard-item p {
+  font-size: 20px;
+  font-weight: bold;
+  color: #007bff; /* Blue color */
+}
+
+/* Dashboard.css */
+
+/* Container for the whole dashboard */
+.dashboard-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin: 20px;
+}
+
+/* Individual statistic items */
+.dashboard-item {
+  background-color: #f1f1f1;
+  padding: 20px;
+  border-radius: 8px;
+  margin: 10px;
+  flex: 1;
+  text-align: center;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* User Statistics container */
+.dashboard-statistics {
+  background-color: #f1f1f1;
+  padding: 20px;
+  border-radius: 8px;
+  margin: 10px;
+  flex: 2; /* Takes more space than individual statistics */
+  text-align: center;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* BMI Statistics within the User Statistics container */
+.bmi-statistics {
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+/* Icon styling */
+.icon {
+  font-size: 32px;
+  margin-bottom: 10px;
+}

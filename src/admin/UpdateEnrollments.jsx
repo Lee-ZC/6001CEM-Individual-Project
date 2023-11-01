@@ -3,16 +3,17 @@ import { collection, query, getDocs, doc, updateDoc } from "firebase/firestore";
 import { firestore } from "../firebase";
 import SideBar from "./components/SideBar";
 
-import "./css/UpdateEnrollments.css"; // Import your custom CSS
+import "./css/UpdateEnrollments.css";
 
 function UpdateEnrollments() {
   const [enrollments, setEnrollments] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [filterDate, setFilterDate] = useState("");
 
   useEffect(() => {
     // Fetch all enrollments from Firestore
     fetchEnrollments();
-  }, []);
+  }, [filterDate]);
 
   const fetchEnrollments = async () => {
     const enrollmentsRef = collection(firestore, "enrollments");
@@ -25,7 +26,12 @@ function UpdateEnrollments() {
         enrollmentData.push({ id: doc.id, ...doc.data() });
       });
 
-      setEnrollments(enrollmentData);
+      // Filter enrollments by the selected date, if a date is selected
+      const filteredEnrollments = filterDate
+        ? enrollmentData.filter((enrollment) => enrollment.date === filterDate)
+        : enrollmentData;
+
+      setEnrollments(filteredEnrollments);
     } catch (error) {
       console.error("Error fetching enrollments:", error);
     } finally {
@@ -56,7 +62,18 @@ function UpdateEnrollments() {
       <SideBar>
         <br />
         <div className="enrollments-history-container">
-          <h2 className="history-title">Enrollments History</h2>
+          <h2 className="history-title">Enrollments Status</h2>
+
+          <div className="date-filter">
+            <label htmlFor="filterDate">Filter by Date: </label>
+            <input
+              type="date"
+              id="filterDate"
+              value={filterDate}
+              onChange={(e) => setFilterDate(e.target.value)}
+            />
+          </div>
+          <br />
 
           {isLoading ? (
             <div className="loading-indicator">
