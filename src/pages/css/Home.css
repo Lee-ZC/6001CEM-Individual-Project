@@ -1,0 +1,41 @@
+/* Home.css */
+
+/* Style for the main container */
+.home-container {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+/* Style for each section (Fitness Nearby and BMI Recommendation Food) */
+.home-section {
+  width: 48%;
+  padding: 20px;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+/* Style for images within each section */
+.home-image {
+  max-width: 100%;
+  border-radius: 5px;
+  margin: 20px 0;
+}
+
+/* Style for buttons */
+.home-button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.home-button:hover {
+  background-color: #0056b3;
+}

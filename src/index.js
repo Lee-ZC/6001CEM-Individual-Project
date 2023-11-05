@@ -30,30 +30,94 @@ import UpdateEnrollments from "./admin/UpdateEnrollments";
 import Dashboard from "./admin/Dashboard";
 import ContactUs from "./pages/ContactUs";
 
+import {
+  FirebaseAuthProvider,
+  AuthenticatedRoute,
+} from "./contexts/AuthenticatedRoute"; // Import your AuthenticatedRoute
+
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
       <Route path="signup" element={<Signup />} />
       <Route path="login" element={<Login />} />
+
       <Route path="/" element={<Protected />}>
-        <Route path="/" index element={<Home />} />
+        <Route
+          index
+          element={<AuthenticatedRoute>{<Home />}</AuthenticatedRoute>}
+        />
+        <Route
+          path="setting"
+          element={<AuthenticatedRoute>{<Setting />}</AuthenticatedRoute>}
+        />
+        <Route
+          path="addproduct"
+          element={<AuthenticatedRoute>{<AddProduct />}</AuthenticatedRoute>}
+        />
+        <Route
+          path="manageproduct"
+          element={<AuthenticatedRoute>{<ManageProduct />}</AuthenticatedRoute>}
+        />
+        <Route
+          path="bmi"
+          element={<AuthenticatedRoute>{<BMI />}</AuthenticatedRoute>}
+        />
+        <Route
+          path="/product/:productId"
+          element={<AuthenticatedRoute>{<ProductDetail />}</AuthenticatedRoute>}
+        />
+        <Route
+          path="cart"
+          element={<AuthenticatedRoute>{<Cart />}</AuthenticatedRoute>}
+        />
+        <Route
+          path="checkout"
+          element={<AuthenticatedRoute>{<Checkout />}</AuthenticatedRoute>}
+        />
+        <Route
+          path="favorites"
+          element={<AuthenticatedRoute>{<Favorites />}</AuthenticatedRoute>}
+        />
+        <Route
+          path="orderhistory"
+          element={<AuthenticatedRoute>{<OrderHistory />}</AuthenticatedRoute>}
+        />
+        <Route
+          path="fitness"
+          element={
+            <AuthenticatedRoute>
+              {<FitnessLocationsNearby />}
+            </AuthenticatedRoute>
+          }
+        />
+        <Route
+          path="addfitness"
+          element={
+            <AuthenticatedRoute>{<AddFitnessLocation />}</AuthenticatedRoute>
+          }
+        />
+        <Route
+          path="enrollments"
+          element={
+            <AuthenticatedRoute>{<EnrollmentsHistory />}</AuthenticatedRoute>
+          }
+        />
+        <Route
+          path="fitnessStatus"
+          element={
+            <AuthenticatedRoute>{<UpdateEnrollments />}</AuthenticatedRoute>
+          }
+        />
+        <Route
+          path="dashboard"
+          element={<AuthenticatedRoute>{<Dashboard />}</AuthenticatedRoute>}
+        />
+        <Route
+          path="contact"
+          element={<AuthenticatedRoute>{<ContactUs />}</AuthenticatedRoute>}
+        />
       </Route>
-      <Route path="setting" element={<Setting />} />
       <Route path="forgotpassword" element={<ForgotPassword />} />
-      <Route path="addproduct" element={<AddProduct />} />
-      <Route path="manageproduct" element={<ManageProduct />} />
-      <Route path="bmi" element={<BMI />} />
-      <Route path="/product/:productId" element={<ProductDetail />} />
-      <Route path="cart" element={<Cart />} />
-      <Route path="checkout" element={<Checkout />} />
-      <Route path="favorites" element={<Favorites />} />
-      <Route path="orderhistory" element={<OrderHistory />} />
-      <Route path="fitness" element={<FitnessLocationsNearby />} />
-      <Route path="addfitness" element={<AddFitnessLocation />} />
-      <Route path="enrollments" element={<EnrollmentsHistory />} />
-      <Route path="fitnessStatus" element={<UpdateEnrollments />} />
-      <Route path="dashboard" element={<Dashboard />} />
-      <Route path="contact" element={<ContactUs />} />
 
       {/* Catch-all route for 404 errors */}
       <Route path="*" element={<ErrorPage />} />
@@ -62,4 +126,8 @@ const router = createBrowserRouter(
 );
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(<RouterProvider router={router} />);
+root.render(
+  <FirebaseAuthProvider>
+    <RouterProvider router={router} />
+  </FirebaseAuthProvider>
+);
