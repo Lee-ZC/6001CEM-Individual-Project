@@ -1,0 +1,52 @@
+/* ManageProduct.css */
+
+/* Container for the product table */
+.product-container {
+  padding: 20px;
+}
+
+/* Loading spinner */
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  font-size: 20px;
+}
+
+/* Table styles */
+.product-table {
+  width: 100%;
+}
+
+.product-table th {
+  background-color: #f2f2f2;
+}
+
+.product-table th,
+.product-table td {
+  text-align: center;
+}
+
+/* Button styles */
+.update-button {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.delete-button {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+/* Add this to your CSS file */
+
+.button-container {
+  display: flex;
+  justify-content: space-between; /* Adjust as needed */
+  align-items: center; /* Adjust as needed */
+}
+
+.button-container button {
+  margin: 0 5px; /* Add spacing between buttons */
+}

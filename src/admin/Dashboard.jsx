@@ -10,9 +10,10 @@ function Dashboard() {
   const [totalOrders, setTotalOrders] = useState(0);
   const [totalUsers, setTotalUsers] = useState(0);
   const [totalSales, setTotalSales] = useState(0);
+  const [monthlyOrderData, setMonthlyOrderData] = useState(null);
+  const [monthlySalesData, setMonthlySalesData] = useState(null); // Add state for monthly sales data
   const [bmiStats, setBmiStats] = useState({ average: 0, max: 0, min: 0 });
   const [userDataReady, setUserDataReady] = useState(false);
-  const [monthlyOrderData, setMonthlyOrderData] = useState(null); // Add state for monthly order data
 
   useEffect(() => {
     // Fetch total orders
@@ -38,7 +39,7 @@ function Dashboard() {
       }
     };
 
-    // Fetch total sales - you need to fetch and calculate this separately
+    // Fetch total sales
     const calculateTotalSales = async () => {
       try {
         const ordersCollection = collection(firestore, "orders");
@@ -81,10 +82,35 @@ function Dashboard() {
       }
     };
 
+    // Fetch and calculate monthly sales data
+    const fetchMonthlySalesData = async () => {
+      try {
+        const ordersCollection = collection(firestore, "orders");
+        const ordersData = await getDocs(ordersCollection);
+
+        const monthlySales = new Array(12).fill(0); // Initialize an array for 12 months with 0 sales
+
+        ordersData.forEach((doc) => {
+          const orderData = doc.data();
+          const orderTimestamp = orderData.orderDate;
+
+          if (orderTimestamp) {
+            const orderMonth = orderTimestamp.toDate().getMonth(); // Extract the month
+            monthlySales[orderMonth] += orderData.totalPrice;
+          }
+        });
+
+        setMonthlySalesData(monthlySales);
+      } catch (error) {
+        console.error("Error fetching monthly sales data:", error);
+      }
+    };
+
     fetchTotalOrders();
     fetchTotalUsers();
     calculateTotalSales();
-    fetchMonthlyOrderData(); // Fetch monthly order data
+    fetchMonthlyOrderData();
+    fetchMonthlySalesData(); // Fetch monthly sales data
   }, []);
 
   // Calculate BMI statistics only when user data is ready
@@ -164,6 +190,48 @@ function Dashboard() {
     }
   }, [monthlyOrderData]);
 
+  // Render the chart for monthly sales
+  useEffect(() => {
+    if (monthlySalesData) {
+      const ctx = document.getElementById("monthlySalesChart").getContext("2d");
+      new Chart(ctx, {
+        type: "bar",
+        data: {
+          labels: [
+            "Jan",
+            "Feb",
+            "Mar",
+            "Apr",
+            "May",
+            "Jun",
+            "Jul",
+            "Aug",
+            "Sep",
+            "Oct",
+            "Nov",
+            "Dec",
+          ],
+          datasets: [
+            {
+              label: "Sales",
+              data: monthlySalesData,
+              backgroundColor: "rgba(75, 192, 75, 0.2)",
+              borderColor: "rgba(75, 192, 75, 1)",
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true,
+            },
+          },
+        },
+      });
+    }
+  }, [monthlySalesData]);
+
   return (
     <div>
       <SideBar>
@@ -185,18 +253,20 @@ function Dashboard() {
           </div>
           <div className="dashboard-statistics">
             <h2>User Statistics</h2>
-            <div className="bmi-statistics">
-              <p>
-                Average BMI: {bmiStats.average.toFixed(2)} | Max BMI:{" "}
-                {bmiStats.max.toFixed(2)} | Min BMI: {bmiStats.min.toFixed(2)}
-              </p>
-            </div>
+            <p>
+              Average BMI: {bmiStats.average.toFixed(2)} | Max BMI:{" "}
+              {bmiStats.max.toFixed(2)} | Min BMI: {bmiStats.min.toFixed(2)}
+            </p>
           </div>
         </div>
         <div className="dashboard-container">
           <div className="dashboard-chart">
             <h2>Monthly Orders</h2>
             <canvas id="monthlyOrdersChart" width="400" height="200" />
+          </div>
+          <div className="dashboard-chart">
+            <h2>Monthly Sales</h2>
+            <canvas id="monthlySalesChart" width="400" height="200" />
           </div>
         </div>
       </SideBar>

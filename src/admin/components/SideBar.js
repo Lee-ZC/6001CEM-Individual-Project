@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
-import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap CSS
-import "../css/SideBar.css"; // Import your custom CSS (assuming you have a CSS file for styling)
-import $ from "jquery"; // Import jQuery
-import "bootstrap/dist/js/bootstrap.bundle.min.js"; // Import Bootstrap JavaScript
+import "bootstrap/dist/css/bootstrap.min.css";
+import "../css/SideBar.css";
+import $ from "jquery";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import healthhub from "../../assets/Health-Hub-logo.png";
 import { auth } from "../../firebase";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 function SideBar(props) {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -40,13 +41,17 @@ function SideBar(props) {
   };
 
   return (
-    <div className={`main-container d-flex ${isExpanded ? "expanded" : ""}`}>
+    <div
+      className={`main-container d-flex flex-wrap flex-md-nowrap ${
+        isExpanded ? "expanded" : ""
+      }`}
+    >
       <div className="sidebar" id="side_nav">
         <div className="header-box px-2 pt-3 pb-4 d-flex justify-content-between">
           <h1 className="fs-4">
             <span className="bg-white text-dark rounded shadow px-2 me-2">
               <img
-                src={healthhub} // Replace with the path to your logo image
+                src={healthhub}
                 width="35"
                 height="30"
                 className="d-inline-block align-top"
@@ -62,7 +67,7 @@ function SideBar(props) {
           </button>
         </div>
         <ul className="list-unstyled px-2">
-          <li className="active">
+          <li className={location.pathname === "/dashboard" ? "active" : ""}>
             <a
               href="/dashboard"
               className="text-decoration-none px-3 py-2 d-block"
@@ -70,7 +75,7 @@ function SideBar(props) {
               <i className="fal fa-home"></i> Dashboard
             </a>
           </li>
-          <li className="">
+          <li className={location.pathname === "/addproduct" ? "active" : ""}>
             <a
               href="/addproduct"
               className="text-decoration-none px-3 py-2 d-block"
@@ -78,7 +83,9 @@ function SideBar(props) {
               <i className="fal fa-list"></i> Diet Product
             </a>
           </li>
-          <li className="">
+          <li
+            className={location.pathname === "/manageproduct" ? "active" : ""}
+          >
             <a
               href="/manageproduct"
               className="text-decoration-none px-3 py-2 d-block"
@@ -86,28 +93,25 @@ function SideBar(props) {
               <i className="fal fa-envelope-open-text"></i> Manage Product
             </a>
           </li>
-          <li className="">
+        </ul>
+        <hr className="h-color mx-2" />
+        <ul className="list-unstyled px-2">
+          <li className={location.pathname === "/addfitness" ? "active" : ""}>
             <a
               href="/addfitness"
               className="text-decoration-none px-3 py-2 d-block"
             >
-              <i className="fal fa-users"></i> Fitness
+              <i className="fal fa-bell"></i> Fitness
             </a>
           </li>
-        </ul>
-        <hr className="h-color mx-2" />
-        <ul className="list-unstyled px-2">
-          <li className="">
+          <li
+            className={location.pathname === "/fitnessStatus" ? "active" : ""}
+          >
             <a
               href="/fitnessStatus"
               className="text-decoration-none px-3 py-2 d-block"
             >
-              <i className="fal fa-bell"></i> Fitness Status Update
-            </a>
-          </li>
-          <li className="">
-            <a href="#" className="text-decoration-none px-3 py-2 d-block">
-              <i className="fal fa-bars"></i> Settings
+              <i className="fal fa-bars"></i> Fitness Status Update
             </a>
           </li>
         </ul>

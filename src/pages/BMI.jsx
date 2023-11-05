@@ -205,6 +205,35 @@ function BMI() {
     return favorites.includes(productId);
   };
 
+  const generateDietPlan = () => {
+    // Example diet plan recommendations based on BMI status
+    let dietRecommendations = "";
+
+    switch (bmiStatus) {
+      case "Underweight":
+        dietRecommendations =
+          "For underweight individuals, it is important to focus on nutrient-rich foods. Include a balance of carbohydrates, proteins, and healthy fats in your diet. Consider consulting with a dietitian for personalized advice.";
+        break;
+      case "Healthy Weight":
+        dietRecommendations =
+          "Maintaining a healthy weight is great! Continue to eat a balanced diet with plenty of fruits, vegetables, lean proteins, and whole grains.";
+        break;
+      case "Overweight":
+        dietRecommendations =
+          "To manage your weight, focus on portion control and reduce intake of sugary and high-fat foods. Incorporate more fruits, vegetables, and lean proteins into your meals.";
+        break;
+      case "Obesity":
+        dietRecommendations =
+          "Obesity may require more comprehensive dietary and lifestyle changes. Consult with a healthcare professional or dietitian for a tailored plan.";
+        break;
+      default:
+        dietRecommendations = "Please calculate your BMI first.";
+        break;
+    }
+
+    return dietRecommendations;
+  };
+
   return (
     <div>
       <Nav />
@@ -233,12 +262,16 @@ function BMI() {
         </div>
         <div className="bmi-status-container">
           {bmiStatus && <p className="bmi-status">Status: {bmiStatus}</p>}
+          <div className="diet-plan-container">
+            <p className="diet-plan">Diet Plan: </p>
+            {generateDietPlan()}
+          </div>
         </div>
       </div>
 
       <hr />
       <center>
-        <h3>Relevant Product {bmiStatus}</h3>
+        <h3>Relevant Product: {bmiStatus}</h3>
       </center>
 
       <center>
