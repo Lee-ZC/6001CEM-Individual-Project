@@ -1,7 +1,4 @@
-import { signOut } from "firebase/auth";
-import React from "react";
-import { auth } from "../firebase";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
@@ -11,23 +8,41 @@ import "./css/Home.css"; // Import your custom CSS for styling
 import { Link } from "react-router-dom"; // Import Link from react-router-dom
 
 const Home = () => {
-  const user = JSON.parse(localStorage.getItem("user"));
-  const navigate = useNavigate();
+  const [news, setNews] = useState([]);
+  const [articlesToShow, setArticlesToShow] = useState(6);
 
-  // Function to handle sign out
-  const handleSignOut = async () => {
+  useEffect(() => {
+    // Fetch health news when the component mounts
+    fetchHealthNews();
+  }, []);
+
+  const fetchHealthNews = async () => {
+    const apiKey = "b5d91466301044ceb91fef30afb719d2"; // Replace with your News API key
+    const healthNewsUrl = `https://newsapi.org/v2/top-headlines?country=us&category=health&apiKey=${apiKey}`;
+
     try {
-      await signOut(auth);
-      localStorage.removeItem("user");
-      Swal.fire(
-        "Signed Out",
-        "You have been signed out successfully.",
-        "success"
-      );
-      navigate("/login"); // Redirect to the login page
+      const response = await fetch(healthNewsUrl);
+
+      if (!response.ok) {
+        throw new Error(
+          `Network response was not ok (HTTP status: ${response.status})`
+        );
+      }
+
+      const data = await response.json();
+
+      if (data.status === "ok") {
+        setNews(data.articles);
+      } else {
+        throw new Error("API response status is not 'ok'");
+      }
     } catch (error) {
-      Swal.fire("Error", "An error occurred while signing out.", "error");
+      console.error("Error fetching health news:", error);
     }
+  };
+
+  const loadMoreArticles = () => {
+    setArticlesToShow(articlesToShow + 3);
   };
 
   return (
@@ -56,6 +71,41 @@ const Home = () => {
           </p>
         </Link>
       </div>
+      <br />
+      <center>
+        <h2>Health News</h2>
+      </center>
+      <div
+        className="news-container"
+        style={{ display: "flex", justifyContent: "center" }}
+      >
+        <div className="news-articles">
+          {news.slice(0, articlesToShow).map((article, index) => (
+            <div key={index} className="news-article">
+              <img
+                src={article.urlToImage}
+                alt="Article Image"
+                className="article-image"
+              />
+              <div className="article-content">
+                <h3>{article.title}</h3>
+                <p>{article.description}</p>
+                <a href={article.url} target="_blank" rel="noopener noreferrer">
+                  Read more
+                </a>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <br />
+      <center>
+        {articlesToShow < news.length && (
+          <button className="more-news-button" onClick={loadMoreArticles}>
+            Load More News
+          </button>
+        )}
+      </center>
       <br /> <br /> <br />
       <Footer />
     </div>

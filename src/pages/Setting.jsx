@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { auth } from "../firebase";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import { doc, getDoc, updateDoc, setDoc } from "firebase/firestore";
+import { firestore } from "../firebase";
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
 import GoToTop from "../components/GoToTop";
@@ -9,37 +11,48 @@ import "./css/Setting.css"; // Import the CSS file for custom styling
 
 const Setting = () => {
   const navigate = useNavigate();
-  const [userInfo, setUserInfo] = useState(null);
+  const [userInfo, setUserInfo] = useState({
+    userId: "",
+    email: "",
+    displayName: "",
+  });
+
+  const [nameInput, setNameInput] = useState(""); // Store the user's name input
+
+  const fetchUserDisplayName = async () => {
+    const user = auth.currentUser;
+    if (user) {
+      const userId = user.uid;
+      const email = user.email;
+      const userDocRef = doc(firestore, "users", userId);
+      const userDoc = await getDoc(userDocRef);
+      const displayName = userDoc.exists() ? userDoc.data().name : "";
+
+      setUserInfo({
+        userId,
+        email,
+        displayName,
+      });
+      setNameInput(displayName); // Set the name input value
+    }
+  };
 
   useEffect(() => {
-    const checkUser = async () => {
-      const user = auth.currentUser;
-      if (user) {
-        // If the user is logged in, set the user information
-        setUserInfo({
-          userId: user.uid,
-          email: user.email,
-        });
-      }
-    };
-
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
-        // If the user is logged in, set the user information
-        setUserInfo({
-          userId: user.uid,
-          email: user.email,
-        });
+        fetchUserDisplayName();
       } else {
-        // Handle the case where the user is not logged in
-        setUserInfo(null);
+        setUserInfo({
+          userId: "",
+          email: "",
+          displayName: "",
+        });
       }
     });
 
-    checkUser();
+    fetchUserDisplayName();
 
     return () => {
-      // Cleanup the subscription
       unsubscribe();
     };
   }, []);
@@ -58,7 +71,35 @@ const Setting = () => {
 
       if (result.isConfirmed) {
         await auth.signOut();
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        localStorage.removeItem("bmi");
+        localStorage.removeItem("height");
+        localStorage.removeItem("weight");
         navigate("/login");
+      }
+    } catch (error) {
+      console.error(error);
+      const errorMessage = error.message.replace("Firebase: ", "");
+      Swal.fire("Error", errorMessage, "error");
+    }
+  };
+
+  const handleSaveName = async () => {
+    try {
+      const user = auth.currentUser;
+      if (user) {
+        const userId = user.uid;
+        const userDocRef = doc(firestore, "users", userId);
+        await updateDoc(userDocRef, {
+          name: nameInput, // Update the user's name
+        });
+        setUserInfo({
+          ...userInfo,
+          displayName: nameInput, // Update the displayed name in the UI
+        });
+        // Show a success alert
+        Swal.fire("Success", "Your name has been updated!", "success");
       }
     } catch (error) {
       console.error(error);
@@ -82,19 +123,28 @@ const Setting = () => {
           <div className="setting-info">
             <div className="setting-info-field">
               <label>User ID:</label>
-              <span className="setting-info-value">
-                {userInfo ? userInfo.userId : "N/A"}
-              </span>
+              <span className="setting-info-value">{userInfo.userId}</span>
             </div>
-
+            <div className="setting-info-field">
+              <label>Name:</label>
+              <input
+                type="text"
+                value={nameInput}
+                onChange={(e) => setNameInput(e.target.value)}
+              />
+            </div>
             <div className="setting-info-field">
               <label>Email:</label>
-              <span className="setting-info-value">
-                {userInfo ? userInfo.email : "N/A"}
-              </span>
+              <span className="setting-info-value">{userInfo.email}</span>
             </div>
           </div>
 
+          <button
+            onClick={handleSaveName}
+            className="setting-button save-button"
+          >
+            Save
+          </button>
           <button
             onClick={handleLogout}
             className="setting-button logout-button"
