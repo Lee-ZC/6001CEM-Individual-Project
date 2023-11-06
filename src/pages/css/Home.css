@@ -39,3 +39,59 @@
 .home-button:hover {
   background-color: #0056b3;
 }
+
+/* Add this CSS to your Home.css or create a new CSS file for the news section */
+
+/* Style for the news articles container */
+.news-articles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  text-align: center;
+  justify-content: center;
+}
+
+/* Style for each news article */
+.news-article {
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  width: 30%; /* Adjust the width as needed */
+  background-color: #fff;
+}
+
+/* Style for the article image */
+.article-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 5px;
+}
+
+/* Style for the article title */
+.news-article h3 {
+  font-size: 1.2rem;
+  margin-top: 10px;
+  color: #333;
+}
+
+/* Style for the article description */
+.news-article p {
+  margin-top: 10px;
+  color: #777;
+}
+
+/* Style for the "Read more" link */
+.news-article a {
+  display: inline-block;
+  margin-top: 10px;
+  color: #007bff;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+.news-article a:hover {
+  color: #0056b3;
+}

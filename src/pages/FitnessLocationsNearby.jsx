@@ -121,83 +121,140 @@ function FitnessLocationsNearby() {
   }
 
   const openEnrollmentForm = async (fitnessLocation) => {
+    // Get the current date and time
+    const currentDate = new Date();
+    const currentDateString = currentDate.toISOString().split("T")[0];
+    const currentTime = currentDate.toTimeString().split(" ")[0];
+
+    // Combine the date and time for comparison
+    const currentDateTime = new Date(`${currentDateString}T${currentTime}`);
+
+    // Generate a list of time slots
+    const timeSlots = [
+      "08:00 AM",
+      "10:00 AM",
+      "12:00 PM",
+      "02:00 PM",
+      "04:00 PM",
+      "06:00 PM",
+      "08:00 PM",
+    ];
+
+    const getCostFromFirestore = async (locationName) => {
+      try {
+        const locationsRef = collection(firestore, "fitnessLocations");
+        const q = query(locationsRef, where("name", "==", locationName));
+        const querySnapshot = await getDocs(q);
+
+        if (querySnapshot.size === 0) {
+          console.error(`Document with name '${locationName}' does not exist.`);
+          return null;
+        }
+
+        const locationDoc = querySnapshot.docs[0];
+        const cost = locationDoc.data().cost;
+
+        return cost;
+      } catch (error) {
+        console.error("Error fetching cost data:", error);
+        return null;
+      }
+    };
+
     // Use SweetAlert to show the form
     const { value: formValues } = await Swal.fire({
       title: `Enroll for ${fitnessLocation.name}`,
-      html:
-        '<input id="swal-date" class="swal2-input enrollment-input" type="date" placeholder="Date (YYYY-MM-DD)">' +
-        "<br>" +
-        '<input id="swal-start-time" class="swal2-input enrollment-input" type="time" placeholder="Start Time (HH:MM AM/PM)">' +
-        "<br>" +
-        '<input id="swal-end-time" class="swal2-input enrollment-input" type="time" placeholder="End Time (HH:MM AM/PM)">' +
-        "<br>" +
-        '<input id="swal-name" class="swal2-input enrollment-input" placeholder="Your Name">' +
-        "<br>" +
-        '<input id="swal-contact" class="swal2-input enrollment-input" placeholder="Contact Number">',
+      html: `
+        <input id="swal-date" class="swal2-input enrollment-input" type="date" placeholder="Date (YYYY-MM-DD)" min="${currentDateString}">
+        <br>
+        <select id="swal-time-slot" class="swal2-select enrollment-input">
+          <option value="">Select a time slot</option>
+          ${timeSlots
+            .map(
+              (timeSlot) => `<option value="${timeSlot}">${timeSlot}</option>`
+            )
+            .join("")}
+        </select>
+        <br>
+        <input id="swal-name" class="swal2-input enrollment-input" placeholder="Your Name">
+        <br>
+        <input id="swal-contact" class="swal2-input enrollment-input" placeholder="Contact Number">
+        <div id="swal-cost" class="swal2-input enrollment-input">Total Cost: </div>     `,
       focusConfirm: false,
-      preConfirm: () => {
+      preConfirm: async () => {
         const dateInput = document.getElementById("swal-date").value;
-        const startTimeInput = document.getElementById("swal-start-time").value;
-        const endTimeInput = document.getElementById("swal-end-time").value;
+        const timeSlotInput = document.getElementById("swal-time-slot").value;
+
+        // Combine the selected date and time for comparison
+        const selectedDateTime = new Date(`${dateInput}T${timeSlotInput}`);
 
         console.log("Date Input:", dateInput);
-        console.log("Start Time Input:", startTimeInput);
-        console.log("End Time Input:", endTimeInput);
+        console.log("Time Slot Input:", timeSlotInput);
 
         // Date format validation (YYYY-MM-DD)
         const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
         const isDateValid = dateRegex.test(dateInput);
 
-        // Time format validation (HH:MM AM/PM)
-        const timeRegex = /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
-        const isStartTimeValid = timeRegex.test(startTimeInput);
-        const isEndTimeValid = timeRegex.test(endTimeInput);
-
         if (!isDateValid) {
           Swal.showValidationMessage("Invalid date format (YYYY-MM-DD)");
-        } else if (!isStartTimeValid || !isEndTimeValid) {
-          Swal.showValidationMessage("Invalid time format (HH:MM AM/PM)");
+        } else if (selectedDateTime < currentDateTime) {
+          Swal.showValidationMessage("Date and time cannot be in the past");
+        } else if (timeSlotInput === "") {
+          Swal.showValidationMessage("Please select a time slot");
         } else {
-          return [
-            dateInput,
-            startTimeInput,
-            endTimeInput,
-            document.getElementById("swal-name").value,
-            document.getElementById("swal-contact").value,
-          ];
+          // Calculate the cost based on the selected fitness location
+          const cost = await getCostFromFirestore(fitnessLocation.name);
+
+          if (cost !== null && !isNaN(cost)) {
+            // Display the calculated cost
+            const costElement = document.getElementById("swal-cost");
+            console.log("costElement:", costElement); // Add this line for debugging
+
+            costElement.textContent = `Total Cost: $${(
+              parseFloat(cost) * 2
+            ).toFixed(2)}`;
+            console.log("Cost Value:", costElement.textContent); // Add this line for debugging
+
+            return [
+              dateInput,
+              timeSlotInput,
+              document.getElementById("swal-name").value,
+              document.getElementById("swal-contact").value,
+              parseFloat(cost), // Include the cost in the formValues
+            ];
+          } else {
+            Swal.showValidationMessage("Error fetching cost data");
+          }
         }
       },
     });
 
     if (formValues) {
-      const [date, startTime, endTime, name, contact] = formValues;
+      // Ensure formValues is structured as an array
+      if (Array.isArray(formValues)) {
+        const [date, timeSlot, name, contact, cost] = formValues;
 
-      // Calculate the total time duration in hours
-      const start = new Date(`${date} ${startTime}`);
-      const end = new Date(`${date} ${endTime}`);
-      const totalTimeHours = ((end - start) / 3600000).toFixed(2); // 3600000 milliseconds in an hour
+        // Save the enrollment information to Firestore
+        const enrollmentData = {
+          date,
+          timeSlot,
+          name,
+          contact,
+          fitnessLocation: fitnessLocation.name,
+          status: "pending",
+          userId: currentUser,
+          totalCost: parseFloat(cost) * 2, // Parse the cost as a float
+        };
 
-      // Save the enrollment information to Firestore
-      const enrollmentData = {
-        date,
-        startTime,
-        endTime,
-        totalTime: totalTimeHours,
-        name,
-        contact,
-        fitnessLocation: fitnessLocation.name,
-        status: "pending",
-        userId: currentUser,
-      };
-
-      try {
-        const docRef = await addDoc(
-          collection(firestore, "enrollments"),
-          enrollmentData
-        );
-        console.log("Enrollment successfully added with ID: ", docRef.id);
-      } catch (error) {
-        console.error("Error adding enrollment: ", error);
+        try {
+          const docRef = await addDoc(
+            collection(firestore, "enrollments"),
+            enrollmentData
+          );
+          console.log("Enrollment successfully added with ID: ", docRef.id);
+        } catch (error) {
+          console.error("Error adding enrollment: ", error);
+        }
       }
     }
   };

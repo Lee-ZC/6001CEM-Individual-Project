@@ -9,6 +9,7 @@ function EnrollmentsHistory() {
   const [enrollments, setEnrollments] = useState([]);
   const [currentUser, setCurrentUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedDate, setSelectedDate] = useState(""); // State to store the selected date
 
   useEffect(() => {
     // Fetch the current user's ID
@@ -18,18 +19,26 @@ function EnrollmentsHistory() {
 
         if (userId) {
           // Fetch enrollments from Firestore
-          fetchEnrollments(userId);
+          fetchEnrollments(userId, selectedDate);
         }
       })
       .catch((error) => {
         console.error("Error getting user ID: ", error);
         setIsLoading(false);
       });
-  }, []);
+  }, [selectedDate]);
 
-  const fetchEnrollments = async (userId) => {
+  const fetchEnrollments = async (userId, date) => {
     const enrollmentsRef = collection(firestore, "enrollments");
-    const q = query(enrollmentsRef, where("userId", "==", userId));
+    let q = query(enrollmentsRef, where("userId", "==", userId));
+
+    if (date) {
+      q = query(
+        enrollmentsRef,
+        where("userId", "==", userId),
+        where("date", "==", date)
+      );
+    }
 
     try {
       const querySnapshot = await getDocs(q);
@@ -67,6 +76,17 @@ function EnrollmentsHistory() {
       <div className="enrollments-history-container">
         <h2 className="history-title">Enrollments History</h2>
 
+        <div>
+          <label htmlFor="dateFilter">Filter by Date:</label>
+          <input
+            type="date"
+            id="dateFilter"
+            value={selectedDate}
+            onChange={(e) => setSelectedDate(e.target.value)}
+          />
+        </div>
+        <br />
+
         {isLoading ? (
           <div className="loading-indicator">
             <div className="spinner"></div>
@@ -75,23 +95,21 @@ function EnrollmentsHistory() {
           <ul className="enrollments-list">
             {enrollments.map((enrollment, index) => (
               <li key={index} className="enrollment-item">
-                <strong className="enrollment-label">Date:</strong>{" "}
+                <strong className="enrollment-label">Date:</strong>
                 {enrollment.date} <br />
-                <strong className="enrollment-label">Start Time:</strong>
-                {enrollment.startTime} <br />
-                <strong className="enrollment-label">End Time:</strong>
-                {enrollment.endTime}
-                <br />
+                <strong className="enrollment-label">Time Slot:</strong>
+                {enrollment.timeSlot} <br />
                 <strong className="enrollment-label">Total Time:</strong>
-                {enrollment.totalTime} {"hours"}
+                {enrollment.totalTime} 2 hours
                 <br />
-                <strong className="enrollment-label">Name:</strong>{" "}
-                {enrollment.name}
+                <strong className="enrollment-label">Total Cost:</strong> {"RM"}
+                {enrollment.totalCost}
                 <br />
-                <strong className="enrollment-label">Contact:</strong>{" "}
-                {enrollment.contact}
-                <br />
-                <strong className="enrollment-label">Location:</strong>{" "}
+                <strong className="enrollment-label">Name:</strong>
+                {enrollment.name} <br />
+                <strong className="enrollment-label">Contact:</strong>
+                {enrollment.contact} <br />
+                <strong className="enrollment-label">Fitness Name:</strong>
                 {enrollment.fitnessLocation} <br /> <br />
                 <strong
                   className={`enrollment-label enrollment-status ${
