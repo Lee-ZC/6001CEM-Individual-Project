@@ -108,13 +108,23 @@ function SideBar(props) {
             </a>
           </li>
           <li
+            className={location.pathname === "/managefitness" ? "active" : ""}
+          >
+            <a
+              href="/managefitness"
+              className="text-decoration-none px-3 py-2 d-block"
+            >
+              <i className="fal fa-bell"></i> Manage Fitness
+            </a>
+          </li>
+          <li
             className={location.pathname === "/fitnessStatus" ? "active" : ""}
           >
             <a
               href="/fitnessStatus"
               className="text-decoration-none px-3 py-2 d-block"
             >
-              <i className="fal fa-bars"></i> Fitness Status Update
+              <i className="fal fa-bars"></i> Enrollments Status Update
             </a>
           </li>
         </ul>

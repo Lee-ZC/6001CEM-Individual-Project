@@ -26,10 +26,16 @@ function Checkout() {
   });
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState("cash"); // Default to "Cash On Delivery"
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setShippingInfo({ ...shippingInfo, [name]: value });
+  };
+
+  const handlePaymentMethodChange = (e) => {
+    const selectedPaymentMethod = e.target.value;
+    setPaymentMethod(selectedPaymentMethod);
   };
 
   useEffect(() => {
@@ -78,6 +84,21 @@ function Checkout() {
   };
 
   const handleOrderSubmit = async () => {
+    // Check if any required shipping information fields are empty
+    if (
+      !shippingInfo.name ||
+      !shippingInfo.address ||
+      !shippingInfo.city ||
+      !shippingInfo.zip
+    ) {
+      Swal.fire(
+        "Error",
+        "Please fill out all required shipping information fields.",
+        "error"
+      );
+      return;
+    }
+
     const user = auth.currentUser;
 
     if (!user) {
@@ -94,6 +115,7 @@ function Checkout() {
       cartItems: cartItems,
       totalPrice: total,
       orderDate: new Date(), // Add the current date and time
+      paymentMethod: paymentMethod, // Save the selected payment method
 
       // Add other order-related data (e.g., order date, status, payment info) as needed.
     };
@@ -120,6 +142,11 @@ function Checkout() {
       // You can also navigate to a confirmation page here
     } catch (error) {
       console.error("Error submitting the order:", error);
+      Swal.fire(
+        "Error",
+        "Error submitting the order: " + error.message,
+        "error"
+      );
     }
   };
 
@@ -202,6 +229,18 @@ function Checkout() {
                   value={shippingInfo.zip}
                   onChange={handleInputChange}
                 />
+              </Form.Group>
+              <Form.Group controlId="paymentMethod">
+                <Form.Label>Select Payment Method</Form.Label>
+                <Form.Control
+                  as="select"
+                  onChange={handlePaymentMethodChange}
+                  value={paymentMethod}
+                >
+                  <option value="cash">Cash On Delivery</option>
+                  <option value="bank">Online Bank Transfer</option>
+                  {/* Add more payment methods if needed */}
+                </Form.Control>
               </Form.Group>
             </Form>
           </div>

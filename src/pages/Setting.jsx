@@ -91,13 +91,22 @@ const Setting = () => {
       if (user) {
         const userId = user.uid;
         const userDocRef = doc(firestore, "users", userId);
+
+        // Check if nameInput is not empty
+        if (nameInput.trim() === "") {
+          Swal.fire("Error", "Name cannot be empty", "error");
+          return; // Exit the function if nameInput is empty
+        }
+
         await updateDoc(userDocRef, {
           name: nameInput, // Update the user's name
         });
+
         setUserInfo({
           ...userInfo,
           displayName: nameInput, // Update the displayed name in the UI
         });
+
         // Show a success alert
         Swal.fire("Success", "Your name has been updated!", "success");
       }
@@ -130,6 +139,7 @@ const Setting = () => {
               <input
                 type="text"
                 value={nameInput}
+                required
                 onChange={(e) => setNameInput(e.target.value)}
               />
             </div>

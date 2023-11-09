@@ -1,37 +1,38 @@
-import React, { useState } from 'react';
-import { auth, firestore } from '../firebase'; // Assuming you have imported Firestore
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { addDoc, collection } from 'firebase/firestore'; // Import Firestore methods
-import { Link, useNavigate } from 'react-router-dom';
-import Swal from 'sweetalert2';
-import './css/LoginSignup.css'; // Import the CSS file
-import user_icon from '../assets/person.png';
-import email_icon from '../assets/email.png';
-import password_icon from '../assets/password.png';
-import { ThreeDots } from 'react-loader-spinner'; // Import the ThreeDots loader
-import { doc, setDoc } from 'firebase/firestore'; // Import doc and setDoc
-
+import React, { useState } from "react";
+import { auth, firestore } from "../firebase"; // Assuming you have imported Firestore
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { addDoc, collection } from "firebase/firestore"; // Import Firestore methods
+import { Link, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
+import "./css/LoginSignup.css"; // Import the CSS file
+import user_icon from "../assets/person.png";
+import email_icon from "../assets/email.png";
+import password_icon from "../assets/password.png";
+import { ThreeDots } from "react-loader-spinner"; // Import the ThreeDots loader
+import { doc, setDoc } from "firebase/firestore"; // Import doc and setDoc
 
 const Signup = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [name, setName] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
   const [isLoading, setIsLoading] = useState(false); // Add loading state
   const navigate = useNavigate();
 
-  
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true); // Start loading
 
     try {
-
       // Create user in Firebase Authentication
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
       const user = userCredential.user;
 
       // Add user details to Firestore with UID as the document ID
-      const userRef = doc(firestore, 'users', user.uid); // Specify the document ID as user.uid
+      const userRef = doc(firestore, "users", user.uid); // Specify the document ID as user.uid
       const newUser = {
         email: email,
         name: name,
@@ -39,24 +40,23 @@ const Signup = () => {
 
       await setDoc(userRef, newUser);
 
-
       // Store user data in localStorage
-      localStorage.setItem('token', user.accessToken);
-      localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem("token", user.accessToken);
+      localStorage.setItem("user", JSON.stringify(user));
 
       Swal.fire({
-        position: 'top-end',
-        icon: 'success',
-        title: 'Account Register Successfully',
+        position: "top-end",
+        icon: "success",
+        title: "Account Register Successfully",
         showConfirmButton: false,
-        timer: 1500
+        timer: 3000,
       });
 
       navigate("/");
     } catch (error) {
       console.error(error);
       const errorMessage = error.message.replace("Firebase: ", "");
-      Swal.fire('Error', errorMessage, 'error');
+      Swal.fire("Error", errorMessage, "error");
     } finally {
       setIsLoading(false); // Stop loading
     }
@@ -107,12 +107,13 @@ const Signup = () => {
           {isLoading ? (
             <ThreeDots color="#ffffff" height={20} width={40} /> // Use ThreeDots
           ) : (
-            'Register'
+            "Register"
           )}
         </button>
-        
       </form>
-      <p>Need to Login? <Link to="/login">Login</Link></p>
+      <p>
+        Need to Login? <Link to="/login">Login</Link>
+      </p>
     </div>
   );
 };
