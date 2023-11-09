@@ -14,18 +14,18 @@ export default function FooterWithLogo() {
           <Footer.Brand
             alt="HealthHub Logo"
             href="https://flowbite.com"
-            name="Flowbite"
+            name="Health-Hub"
             src="https://flowbite.com/docs/images/logo.svg"
           />
-          <Footer.LinkGroup>
+          {/* <Footer.LinkGroup>
             <Footer.Link href="#">About</Footer.Link>
             <Footer.Link href="#">Privacy Policy</Footer.Link>
             <Footer.Link href="#">Licensing</Footer.Link>
             <Footer.Link href="/contact">Contact</Footer.Link>
-          </Footer.LinkGroup>
+          </Footer.LinkGroup> */}
         </div>
         <Footer.Divider />
-        <Footer.Copyright by="Flowbite™" href="#" year={2022} />
+        <Footer.Copyright by="Health-Hub™" href="/" year={2022} />
       </div>
     </Footer>
   );

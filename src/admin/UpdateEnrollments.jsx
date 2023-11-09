@@ -85,12 +85,10 @@ function UpdateEnrollments() {
                 <li key={index} className="enrollment-item">
                   <strong className="enrollment-label">Date:</strong>{" "}
                   {enrollment.date} <br />
-                  <strong className="enrollment-label">Start Time:</strong>{" "}
-                  {enrollment.startTime} <br />
-                  <strong className="enrollment-label">End Time:</strong>{" "}
-                  {enrollment.endTime} <br />
+                  <strong className="enrollment-label">Time Slot:</strong>{" "}
+                  {enrollment.timeSlot} <br />
                   <strong className="enrollment-label">Total Time:</strong>{" "}
-                  {enrollment.totalTime} hours
+                  {enrollment.totalTime} 2 hours
                   <br />
                   <strong className="enrollment-label">Name:</strong>{" "}
                   {enrollment.name} <br />

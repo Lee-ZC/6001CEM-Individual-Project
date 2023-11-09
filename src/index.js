@@ -34,6 +34,7 @@ import {
   FirebaseAuthProvider,
   AuthenticatedRoute,
 } from "./contexts/AuthenticatedRoute"; // Import your AuthenticatedRoute
+import ManageFitness from "./admin/ManageFitness";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -95,6 +96,10 @@ const router = createBrowserRouter(
           element={
             <AuthenticatedRoute>{<AddFitnessLocation />}</AuthenticatedRoute>
           }
+        />
+        <Route
+          path="managefitness"
+          element={<AuthenticatedRoute>{<ManageFitness />}</AuthenticatedRoute>}
         />
         <Route
           path="enrollments"

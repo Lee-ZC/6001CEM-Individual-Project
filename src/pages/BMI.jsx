@@ -15,6 +15,7 @@ import {
 import "./css/Bmi.css";
 import { Link } from "react-router-dom";
 import { setDoc } from "firebase/firestore";
+import Swal from "sweetalert2"; // Import SweetAlert2
 
 function BMI() {
   const [weight, setWeight] = useState(0);
@@ -87,43 +88,63 @@ function BMI() {
   }, [user]);
 
   const calculateBMI = () => {
-    const heightInMeters = height / 100;
-    const bmiValue = (weight / (heightInMeters * heightInMeters)).toFixed(1);
-    setBMI(bmiValue);
+    try {
+      // Ensure that weight and height are numeric values
+      if (isNaN(weight) || isNaN(height)) {
+        throw new Error("Weight and height must be numeric values.");
+      }
 
-    let status = "";
-    if (bmiValue < 18.5) {
-      status = "Underweight";
-    } else if (bmiValue < 24.9) {
-      status = "Healthy Weight";
-    } else if (bmiValue < 29.9) {
-      status = "Overweight";
-    } else {
-      status = "Obesity";
-    }
-    setBMIStatus(status);
+      // Check if weight and height are non-negative
+      if (weight < 0 || height < 0) {
+        throw new Error("Weight and height must be non-negative values.");
+      }
 
-    localStorage.setItem("bmi", bmiValue);
-    localStorage.setItem("weight", weight);
-    localStorage.setItem("height", height);
+      const heightInMeters = height / 100;
+      const bmiValue = (weight / (heightInMeters * heightInMeters)).toFixed(1);
+      setBMI(bmiValue);
 
-    if (user) {
-      const userDocRef = doc(firestore, "users", user.uid);
+      let status = "";
+      if (bmiValue < 18.5) {
+        status = "Underweight";
+      } else if (bmiValue < 24.9) {
+        status = "Healthy Weight";
+      } else if (bmiValue < 29.9) {
+        status = "Overweight";
+      } else {
+        status = "Obesity";
+      }
+      setBMIStatus(status);
 
-      updateDoc(userDocRef, {
-        bmi: bmiValue,
-        weight: weight,
-        height: height,
-        bmiStatus: status,
-      })
-        .then(() => {
-          console.log("BMI updated in Firestore");
+      localStorage.setItem("bmi", bmiValue);
+      localStorage.setItem("weight", weight);
+      localStorage.setItem("height", height);
+
+      if (user) {
+        const userDocRef = doc(firestore, "users", user.uid);
+
+        updateDoc(userDocRef, {
+          bmi: bmiValue,
+          weight: weight,
+          height: height,
+          bmiStatus: status,
         })
-        .catch((error) => {
-          console.error("Error updating BMI:", error);
-        });
-    } else {
-      console.log("User is not authenticated.");
+          .then(() => {
+            console.log("BMI updated in Firestore");
+          })
+          .catch((error) => {
+            console.error("Error updating BMI in Firestore:", error);
+            Swal.fire(
+              "Error",
+              "Error updating BMI in Firestore: " + error.message,
+              "error"
+            );
+          });
+      } else {
+        console.log("User is not authenticated.");
+      }
+    } catch (error) {
+      console.error("Error calculating BMI:", error);
+      Swal.fire("Error", error.message, "error");
     }
   };
 

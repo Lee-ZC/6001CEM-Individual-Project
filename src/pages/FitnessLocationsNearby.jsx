@@ -184,6 +184,8 @@ function FitnessLocationsNearby() {
       preConfirm: async () => {
         const dateInput = document.getElementById("swal-date").value;
         const timeSlotInput = document.getElementById("swal-time-slot").value;
+        const nameInput = document.getElementById("swal-name").value;
+        const contactInput = document.getElementById("swal-contact").value;
 
         // Combine the selected date and time for comparison
         const selectedDateTime = new Date(`${dateInput}T${timeSlotInput}`);
@@ -201,6 +203,10 @@ function FitnessLocationsNearby() {
           Swal.showValidationMessage("Date and time cannot be in the past");
         } else if (timeSlotInput === "") {
           Swal.showValidationMessage("Please select a time slot");
+        } else if (nameInput.trim() === "") {
+          Swal.showValidationMessage("Name cannot be empty");
+        } else if (contactInput.trim() === "") {
+          Swal.showValidationMessage("Contact Number cannot be empty");
         } else {
           // Calculate the cost based on the selected fitness location
           const cost = await getCostFromFirestore(fitnessLocation.name);
@@ -218,8 +224,8 @@ function FitnessLocationsNearby() {
             return [
               dateInput,
               timeSlotInput,
-              document.getElementById("swal-name").value,
-              document.getElementById("swal-contact").value,
+              nameInput,
+              contactInput,
               parseFloat(cost), // Include the cost in the formValues
             ];
           } else {
@@ -252,8 +258,12 @@ function FitnessLocationsNearby() {
             enrollmentData
           );
           console.log("Enrollment successfully added with ID: ", docRef.id);
+          // Display a success message using SweetAlert2
+          Swal.fire("Success", "Enrollment successful!", "success");
         } catch (error) {
           console.error("Error adding enrollment: ", error);
+          // Display an error message using SweetAlert2
+          Swal.fire("Error", "Enrollment failed. Please try again.", "error");
         }
       }
     }
@@ -266,7 +276,9 @@ function FitnessLocationsNearby() {
         <h2 className="enroll-page-title">Fitness Locations Nearby</h2>
 
         <div className="filter-container">
-          <label className="enroll-page-label">Filter by Category:</label>
+          <label className="enroll-page-label">
+            Filter Fitness Activities by Category:
+          </label>
           <select
             value={filterCategory}
             onChange={(e) => setFilterCategory(e.target.value)}

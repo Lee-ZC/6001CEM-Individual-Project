@@ -23,14 +23,26 @@ function NavScrollExample() {
       case "home":
         navigate("/");
         break;
-      case "explore":
-        navigate("#action2");
+      case "fitness":
+        navigate("/fitness");
+        break;
+      case "enrollments":
+        navigate("/enrollments");
+        break;
+      case "favorites":
+        navigate("/favorites");
+        break;
+      case "cart":
+        navigate("/cart");
         break;
       case "bmi":
         navigate("/bmi");
         break;
-      case "shop":
-        navigate("#action4");
+      case "contact":
+        navigate("/contact");
+        break;
+      case "orderhistory":
+        navigate("/orderhistory");
         break;
       case "setting":
         navigate("/setting");
