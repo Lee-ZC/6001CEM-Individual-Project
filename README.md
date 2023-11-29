@@ -10,4 +10,5 @@ provided on the website. Furthermore, the application will generate diet plan re
 
 ## Objective
 • To develop a web-based health and fitness application that allows users to identify within 5km fitness activities and enroll based on recommendation provided at website.
+
 • To generate diet plan recommendations for user based on their body mass index (BMI) and allows the user to buy relevant diet products from website
